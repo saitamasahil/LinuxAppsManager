@@ -61,7 +61,7 @@ chmod +x manager.sh && ./manager.sh
 chmod +x manager.sh && ./manager.sh
 ```
 
-3. 2. Choose the option 4 to run setup.
+3. Choose the option 4 to run setup.
 4. Choose the option 1 to install Linux Apps Manager in your system.
 5. To run Linux Apps Manager, type `lam` in your terminal.
 6. Choose the app manager you want to use from the main menu.
