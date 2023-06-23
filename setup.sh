@@ -3,6 +3,7 @@
 # Define some color variables
 PURPLE='\033[1m\033[38;5;140m'
 GREEN='\033[1m\033[32m'
+PEACH='\e[1;38;2;255;204;153m'
 NC='\033[0m' # No Color
 
 # Go back to main menu
@@ -29,6 +30,7 @@ printf "${PURPLE}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
 echo ""
 
 # Ask user what option they want to choose
+echo -e "${PEACH}Select Your Choice:${NC}"
 echo "1. Install Linux Apps Manager In System"
 echo "2. Uninstall Linux Apps Manager From System"
 echo "3. Go Back To Main Menu"
