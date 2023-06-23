@@ -70,7 +70,7 @@ install_app() {
     apt search "$app_name" # Use apt command to search for app name
     sleep 1
     echo "-----------------------"
-    read -rp "Enter the exact app name to install: " app_install
+    read -rp "Enter the exact app name from above shown list to install: " app_install
     sudo apt install "$app_install" # Use sudo and apt command to install app
     sleep 1
     read -rp "Press Enter to continue..."

@@ -68,7 +68,7 @@ install_app() {
     snap find "$app_name" # Use snap command to search for app name
     sleep 1
     echo "-----------------------"
-    read -rp "Enter the exact app name to install: " app_install
+    read -rp "Enter the exact app name from above shown list to install: " app_install
     snap install "$app_install" # Use snap command to install app
     sleep 1
     read -rp "Press Enter to continue..."
@@ -77,7 +77,7 @@ install_app() {
 # Function to uninstall a specific Snap app
 uninstall_app() {
     read -rp "Enter the app name to uninstall: " app_name
-    snap remove "$app_name" # Use snap command to uninstall app
+    snap remove --purge "$app_name" # Use snap command to uninstall app
     sleep 1
     read -rp "Press Enter to continue..."
 }
