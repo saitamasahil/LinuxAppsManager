@@ -5,9 +5,6 @@ PURPLE='\033[1m\033[38;5;140m'
 PEACH='\e[1;38;2;255;204;153m'
 NC='\033[0m' # No Color
 
-# Get the name of the current shell
-shell=$(basename "$SHELL")
-
 # Show heading in middle
 clear
 echo ""
