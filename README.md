@@ -6,6 +6,7 @@ Linux Apps Manager is a shell script program that allows you to easily manage yo
 
 - List all installed apps including runtimes
 - List user installed apps
+- Install flatpak & snap in one click
 - Update all apps
 - Downgrade apps
 - Search and install apps

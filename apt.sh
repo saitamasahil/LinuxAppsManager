@@ -23,9 +23,8 @@ display_menu() {
     echo "3. Update All Apps"
     echo "4. Search and Install App"
     echo "5. Uninstall App"
-    echo "6. Downgrade App"
-    echo "7. Delete APT Cache and Unnecessary Data"
-    echo "8. Go Back To Main Menu"
+    echo "6. Delete APT Cache and Unnecessary Data"
+    echo "7. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -84,16 +83,6 @@ uninstall_app() {
     read -rp "Press Enter to continue..."
 }
 
-# Function to downgrade a specific APT app
-downgrade_app() {
-    read -rp "Enter the app name to downgrade: " app_name
-    sudo apt-cache policy "$app_name" # Show the available versions of the package
-    read -rp "Enter the version number to downgrade to: " ver_num
-    sudo apt install "$app_name"="$ver_num" # Install the specified version
-    sleep 1
-    read -rp "Press Enter to continue..."
-}
-
 # Function to delete APT cache and unnecessary data
 delete_unused() {
     echo "Deleting APT Cache and Unnecessary Data..."
@@ -123,9 +112,8 @@ while true; do
     3) update_apps ;;                              # Update all apps
     4) install_app ;;                              # Install app
     5) uninstall_app ;;                            # Uninstall app
-    6) downgrade_app ;;                            # Downgrade app
-    7) delete_unused ;;                            # Delete apt cache and unnecessary data
-    8) main_menu ;;                                # Exit to main menu
+    6) delete_unused ;;                            # Delete apt cache and unnecessary data
+    7) main_menu ;;                                # Exit to main menu
     *) echo "Invalid choice. Please try again." ;; # Invalid choice
     esac
 done
