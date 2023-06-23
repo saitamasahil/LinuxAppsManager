@@ -24,7 +24,8 @@ display_menu() {
     echo "4. Search and Install App"
     echo "5. Uninstall App"
     echo "6. Downgrade App"
-    echo "7. Go Back To Main Menu"
+    echo "7. Delete APT Cache and Unnecessary Data"
+    echo "8. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -93,6 +94,18 @@ downgrade_app() {
     read -rp "Press Enter to continue..."
 }
 
+# Function to delete APT cache and unnecessary data
+delete_unused() {
+    echo "Deleting APT Cache and Unnecessary Data..."
+    sleep 1
+    echo "-----------------------"
+    sudo apt autoclean                    # Use sudo and apt command to clean up partial packages and cache
+    sudo apt autoremove                   # Use sudo and apt command to remove unused packages
+    sudo rm -rf /var/cache/apt/archives/* # Use sudo and rm command to remove archived packages
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
 # Go back to main menu
 main_menu() {
     chmod +x manager.sh
@@ -111,7 +124,8 @@ while true; do
     4) install_app ;;                              # Install app
     5) uninstall_app ;;                            # Uninstall app
     6) downgrade_app ;;                            # Downgrade app
-    7) main_menu ;;                                # Exit to main menu
+    7) delete_unused ;;                            # Delete apt cache and unnecessary data
+    8) main_menu ;;                                # Exit to main menu
     *) echo "Invalid choice. Please try again." ;; # Invalid choice
     esac
 done

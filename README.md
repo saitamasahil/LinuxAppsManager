@@ -10,6 +10,7 @@ Linux Apps Manager is a shell script program that allows you to easily manage yo
 - Downgrade apps
 - Search and install apps
 - Uninstall apps
+- Delete unnecessary data & cache
 - Switch between different app managers
 
 ## Screenshots

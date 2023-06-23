@@ -24,7 +24,8 @@ display_menu() {
     echo "4. Search and Install App"
     echo "5. Uninstall App"
     echo "6. Downgrade App(Flathub Remote)"
-    echo "7. Go Back To Main Menu"
+    echo "7. Delete Unused Runtime and Flatpak Cache"
+    echo "8. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -97,6 +98,19 @@ downgrade_app() {
     read -rp "Press Enter to continue..."
 }
 
+# Function to delete unused runtime and flatpak cache and other unnecessary things
+delete_unused() {
+    echo "Deleting Unused Runtime and Flatpak Cache..."
+    sleep 1
+    echo "-----------------------"
+    flatpak uninstall --unused # Use flatpak command to uninstall unused runtime
+    flatpak repair --user      # Use flatpak command to repair user installation
+    flatpak repair --system    # Use flatpak command to repair system installation
+    rm -rf ~/.var/app/*/.cache # Use rm command to remove cache files
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
 # Go back to main menu
 main_menu() {
     chmod +x manager.sh
@@ -115,7 +129,8 @@ while true; do
     4) install_app ;;                              # Search and install app
     5) uninstall_app ;;                            # Uninstall app
     6) downgrade_app ;;                            # Downgrade app
-    7) main_menu ;;                                # Exit to main menu
+    7) delete_unused ;;                            # Delete unused runtime and flatpak cache
+    8) main_menu ;;                                # Exit to main menu
     *) echo "Invalid choice. Please try again." ;; # Invalid choice
     esac
 done
