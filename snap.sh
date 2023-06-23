@@ -18,15 +18,70 @@ display_menu() {
     printf "${BLUE}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
     echo ""
     echo -e "${PEACH}Select Your Choice:${NC}"
-    echo "1. List All Apps Including Core Components"
-    echo "2. List Installed Apps Excluding Core Components"
-    echo "3. Update All Apps"
-    echo "4. Search and Install App"
-    echo "5. Uninstall App"
-    echo "6. Downgrade App"
-    echo "7. Go Back To Main Menu"
+    echo "1. Setup Snap"
+    echo "2. List All Apps Including Core Components"
+    echo "3. List Installed Apps Excluding Core Components"
+    echo "4. Update All Apps"
+    echo "5. Search and Install App"
+    echo "6. Uninstall App"
+    echo "7. Downgrade App"
+    echo "8. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
+}
+
+# Function to install or uninstall snap system in a distro
+setup_snap() {
+    # Detect the distro name using lsb_release command
+    distro=$(lsb_release -si)
+    echo "Your distro is $distro."
+    sleep 1
+
+    # Check if snap is already installed using command -v
+    if command -v snap >/dev/null; then
+        echo "Snap is already installed."
+        sleep 1
+        # Ask the user if they want to uninstall snap
+        read -rp "Do you want to uninstall snap? (y/n): " choice
+        case $choice in
+        [yY]*) # If yes, then use the appropriate command for the distro
+            echo "Uninstalling snap..."
+            sleep 1
+            case $distro in
+            Ubuntu | Debian) # For Ubuntu or Debian based distros, use apt remove
+                sudo apt remove --purge snapd -y ;;
+            Fedora) # For Fedora based distros, use dnf remove
+                sudo dnf remove snapd -y ;;
+            Arch | Manjaro) # For Arch or Manjaro based distros, use pacman -R
+                sudo pacman -R snapd ;;
+            *) # For other distros, show an error message
+                echo "Sorry, I don't know how to uninstall snap on your distro." ;;
+            esac
+            ;;
+        [nN]*) # If no, then do nothing and exit the function
+            echo "OK, keeping snap." ;;
+        *) # If invalid input, show an error message and exit the function
+            echo "Invalid input. Please enter y or n." ;;
+        esac
+    else # If snap is not installed, then use the appropriate command for the distro to install it
+        echo "Snap is not installed."
+        sleep 1
+        echo "Installing snap..."
+        sleep 1
+        case $distro in
+        Ubuntu | Debian) # For Ubuntu or Debian based distros, use apt install
+            sudo apt update && sudo apt install snapd -y ;;
+        Fedora) # For Fedora based distros, use dnf install
+            sudo dnf install snapd -y ;;
+        Arch | Manjaro) # For Arch or Manjaro based distros, use pacman -S
+            sudo pacman -S snapd ;;
+        *) # For other distros, show an error message and exit the function
+            echo "Sorry, I don't know how to install snap on your distro." ;;
+        esac
+    fi
+
+    sleep 1
+    read -rp "Press Enter to continue..."
 }
 
 # Function to list all installed Snap apps
@@ -104,13 +159,14 @@ while true; do
     read -r choice
 
     case $choice in                                # Handle the choice
-    1) list_all_apps ;;                            # List apps
-    2) list_user_apps ;;                           # List installed apps excluding core apps
-    3) update_apps ;;                              # Update all apps
-    4) install_app ;;                              # Search and install app
-    5) uninstall_app ;;                            # Uninstall app
-    6) downgrade_app ;;                            # Downgrade app
-    7) main_menu ;;                                # Exit to main menu
+    1) setup_snap ;;                               # Install or uninstall snap system in a distro
+    2) list_all_apps ;;                            # List apps
+    3) list_user_apps ;;                           # List installed apps excluding core apps
+    4) update_apps ;;                              # Update all apps
+    5) install_app ;;                              # Search and install app
+    6) uninstall_app ;;                            # Uninstall app
+    7) downgrade_app ;;                            # Downgrade app
+    8) main_menu ;;                                # Exit to main menu
     *) echo "Invalid choice. Please try again." ;; # Invalid choice
     esac
 done
