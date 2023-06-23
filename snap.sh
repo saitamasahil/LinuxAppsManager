@@ -78,6 +78,12 @@ setup_snap() {
         *) # For other distros, show an error message and exit the function
             echo "Sorry, I don't know how to install snap on your distro." ;;
         esac
+
+        # Add sudo snap install core command to activate snap on some distros
+        echo "Activating snap..."
+        sleep 1
+        sudo snap install core
+
     fi
 
     sleep 1

@@ -79,6 +79,12 @@ setup_flatpak() {
         *) # For other distros, show an error message and exit the function
             echo "Sorry, I don't know how to install flatpak on your distro." ;;
         esac
+
+        # Add flathub repo
+        echo "Adding flathub repo..."
+        sleep 1
+        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
     fi
 
     sleep 1
