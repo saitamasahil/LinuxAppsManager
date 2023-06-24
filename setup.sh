@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Define some color variables
-PURPLE='\033[1m\033[38;5;140m'
-GREEN='\033[1m\033[32m'
+RED='\033[1m\033[38;5;196m'
+YELLOW='\033[1m\033[38;5;226m'
 PEACH='\e[1;38;2;255;204;153m'
 NC='\033[0m' # No Color
 
@@ -24,9 +24,9 @@ echo ""
 COLUMNS=$(tput cols)
 t1="=========================="
 t2="Linux Apps Manager Setup"
-printf "${PURPLE}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
-printf "${PURPLE}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
-printf "${PURPLE}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+printf "${RED}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+printf "${RED}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
+printf "${RED}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
 echo ""
 
 # Ask user what option they want to choose
@@ -61,9 +61,9 @@ lam () {
   fi
 }
 EOF
-        echo -e "${GREEN}Linux Apps Manager has been successfully installed on your system.${NC}"
-        echo -e "${PURPLE}To run Linux Apps Manager, type 'lam' in terminal.${NC}"
-        echo -e "${PURPLE}Don't delete the directory where you cloned the repository.${NC}"
+        echo -e "${YELLOW}Linux Apps Manager has been successfully installed on your system.${NC}"
+        echo -e "${YELLOW}To run Linux Apps Manager, type 'lam' in terminal.${NC}"
+        echo -e "${YELLOW}Don't delete the directory where you cloned the repository.${NC}"
         echo ""
         read -n 1 -s -r -p "Press any key to continue..."
         echo
