@@ -63,7 +63,7 @@ chmod +x manager.sh && ./manager.sh
 chmod +x manager.sh && ./manager.sh
 ```
 
-3. Choose the option 5 to run setup.
+3. Choose the option 6 to run setup.
 4. Choose the option 1 to install Linux Apps Manager in your system.
 5. To run Linux Apps Manager, type `lam` in your terminal.
 6. Choose the app manager you want to use from the main menu.
@@ -77,7 +77,7 @@ chmod +x manager.sh && ./manager.sh
 To uninstall Linux Apps Manager from your system, follow these steps:
 
 1. Run `lam` in your terminal.
-2. Choose the option 5 to run setup.
+2. Choose the option 6 to run setup.
 3. Choose the option 2 to uninstall Linux Apps Manager from your system.
 
 ## License

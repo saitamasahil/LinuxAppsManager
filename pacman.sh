@@ -54,7 +54,7 @@ update_apps() {
     echo "Updating All Apps..."
     sleep 1
     echo "-----------------------"
-    sudo pacman -Syu # Use sudo and pacman command to update and upgrade all apps
+    sudo pacman -Syu --noconfirm # Use sudo and pacman command to update and upgrade all apps
     sleep 1
     read -rp "Press Enter to continue..."
 }
