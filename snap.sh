@@ -42,7 +42,7 @@ setup_snap() {
         echo "Snap is already installed."
         sleep 1
         # Ask the user if they want to uninstall snap
-        read -rp "Do you want to uninstall snap? (y/n): " choice
+        read -rp "Do you want to uninstall snap? (Y/n): " choice
         case $choice in
         [yY]*) # If yes, then use the appropriate command for the distro
             echo "Uninstalling snap..."

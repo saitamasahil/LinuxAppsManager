@@ -26,7 +26,8 @@ display_menu() {
     echo "6. Uninstall App"
     echo "7. Downgrade App(Flathub Remote)"
     echo "8. Delete Unused Runtime and Flatpak Cache"
-    echo "9. Go Back To Main Menu"
+    echo "9. Manage Permissions"
+    echo "10. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -43,7 +44,7 @@ setup_flatpak() {
         echo "Flatpak is already installed."
         sleep 1
         # Ask the user if they want to uninstall flatpak
-        read -rp "Do you want to uninstall flatpak? (y/n): " choice
+        read -rp "Do you want to uninstall flatpak? (Y/n): " choice
         case $choice in
         [yY]*) # If yes, then use the appropriate command for the distro
             echo "Uninstalling flatpak..."
@@ -172,6 +173,30 @@ delete_unused() {
     read -rp "Press Enter to continue..."
 }
 
+# Function to manage permissions for Flatpak apps using Flatseal
+manage_permissions() {
+    echo "Managing Permissions for Flatpak Apps..."
+    sleep 1
+    echo "-----------------------"
+    # Check if Flatseal is installed
+    if flatpak list --app | grep -q "Flatseal"; then
+        :
+    else
+        echo "Flatseal is not installed. Installing it now..."
+        flatpak install com.github.tchx84.Flatseal -y # Use flatpak command to install Flatseal with yes option
+    fi
+    # Launch Flatseal
+    echo "Launching Flatseal..."
+    flatpak run com.github.tchx84.Flatseal & # Use flatpak command to run Flatseal in the background
+    sleep 5
+    # Wait for Flatseal to close
+    echo "Waiting for Flatseal to close..."
+    wait # Wait for the background process to finish
+    echo "Flatseal has closed."
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
 # Go back to main menu
 main_menu() {
     chmod +x manager.sh
@@ -192,7 +217,8 @@ while true; do
     6) uninstall_app ;;                            # Uninstall app
     7) downgrade_app ;;                            # Downgrade app
     8) delete_unused ;;                            # Delete unused runtime and flatpak cache
-    9) main_menu ;;                                # Exit to main menu
+    9) manage_permissions ;;                       # Manage permissions for Flatpak apps using Flatseal
+    10) main_menu ;;                               # Exit to main menu
     *) echo "Invalid choice. Please try again." ;; # Invalid choice
     esac
 done
