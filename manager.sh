@@ -5,6 +5,28 @@ PURPLE='\033[1m\033[38;5;140m'
 PEACH='\e[1;38;2;255;204;153m'
 NC='\033[0m' # No Color
 
+# Define a function to exit the script
+exit_script() {
+    clear
+    cd ~ # Change directory to home
+    # Get the name of the current shell
+    shell_name=$(basename "$SHELL")
+    # Run the exec command according to the shell
+    case $shell_name in
+    bash) exec bash ;;
+    zsh) exec zsh ;;
+    ksh) exec ksh ;;
+    csh) exec csh ;;
+    tcsh) exec tcsh ;;
+    fish) exec fish ;;
+    *) echo "Unknown shell: $shell_name" ;;
+    esac
+}
+
+# Set a trap to call the function when SIGTSTP(ctrl + z) & SIGINT(ctrl + c) is received
+trap exit_script SIGTSTP
+trap exit_script SIGINT
+
 # Show heading in middle
 clear
 echo ""
@@ -24,6 +46,7 @@ echo "3. Open Snap App Manager"
 echo "4. Open Flatpak App Manager"
 echo "5. Update All Packages In Your System"
 echo "6. Run Setup"
+echo "7. Exit Program"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
@@ -85,6 +108,9 @@ elif [ $choice -eq 5 ]; then
 
 elif [ $choice -eq 6 ]; then
     chmod +x setup.sh && ./setup.sh
+
+elif [ $choice -eq 7 ]; then
+    exit_script
 
 else
     echo "Invalid choice. Please try again."
