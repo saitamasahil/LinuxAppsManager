@@ -85,4 +85,9 @@ elif [ $choice -eq 5 ]; then
 
 elif [ $choice -eq 6 ]; then
     chmod +x setup.sh && ./setup.sh
+
+else
+    echo "Invalid choice. Please try again."
+    sleep 3
+    chmod +x manager.sh && ./manager.sh
 fi

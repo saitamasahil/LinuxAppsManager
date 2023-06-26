@@ -97,4 +97,9 @@ elif [ $choice -eq 2 ]; then
 
 elif [ $choice -eq 3 ]; then
     main_menu
+
+else
+    echo "Invalid choice. Please try again."
+    sleep 3
+    chmod +x setup.sh && ./setup.sh
 fi

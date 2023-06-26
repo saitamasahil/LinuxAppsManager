@@ -232,16 +232,16 @@ while true; do
     display_menu # Display the menu
     read -r choice
 
-    case $choice in                                # Handle the choice
-    1) setup_snap ;;                               # Install or uninstall snap system in a distro
-    2) list_all_apps ;;                            # List apps
-    3) list_user_apps ;;                           # List installed apps excluding core apps
-    4) update_apps ;;                              # Update all apps
-    5) install_app ;;                              # Search and install app
-    6) uninstall_app ;;                            # Uninstall app
-    7) downgrade_app ;;                            # Downgrade app
-    8) manage_permissions ;;                       # Manage permissions of snap apps
-    9) main_menu ;;                                # Exit to main menu
-    *) echo "Invalid choice. Please try again." ;; # Invalid choice
+    case $choice in                                           # Handle the choice
+    1) setup_snap ;;                                          # Install or uninstall snap system in a distro
+    2) list_all_apps ;;                                       # List apps
+    3) list_user_apps ;;                                      # List installed apps excluding core apps
+    4) update_apps ;;                                         # Update all apps
+    5) install_app ;;                                         # Search and install app
+    6) uninstall_app ;;                                       # Uninstall app
+    7) downgrade_app ;;                                       # Downgrade app
+    8) manage_permissions ;;                                  # Manage permissions of snap apps
+    9) main_menu ;;                                           # Exit to main menu
+    *) echo "Invalid choice. Please try again." && sleep 3 ;; # Invalid choice
     esac
 done

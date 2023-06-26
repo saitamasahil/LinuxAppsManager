@@ -104,14 +104,14 @@ while true; do
     display_menu # Display the menu
     read -r choice
 
-    case $choice in                                # Handle the choice
-    1) list_all_apps ;;                            # List all apps
-    2) list_user_apps ;;                           # List user apps
-    3) update_apps ;;                              # Update all apps
-    4) install_app ;;                              # Install app
-    5) uninstall_app ;;                            # Uninstall app
-    6) delete_unused ;;                            # Delete pacman cache and unnecessary data
-    7) main_menu ;;                                # Exit to main menu
-    *) echo "Invalid choice. Please try again." ;; # Invalid choice
+    case $choice in                                           # Handle the choice
+    1) list_all_apps ;;                                       # List all apps
+    2) list_user_apps ;;                                      # List user apps
+    3) update_apps ;;                                         # Update all apps
+    4) install_app ;;                                         # Install app
+    5) uninstall_app ;;                                       # Uninstall app
+    6) delete_unused ;;                                       # Delete pacman cache and unnecessary data
+    7) main_menu ;;                                           # Exit to main menu
+    *) echo "Invalid choice. Please try again." && sleep 3 ;; # Invalid choice
     esac
 done
