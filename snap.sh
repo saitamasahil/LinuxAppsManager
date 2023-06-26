@@ -25,7 +25,8 @@ display_menu() {
     echo "5. Search and Install App"
     echo "6. Uninstall App"
     echo "7. Downgrade App"
-    echo "8. Go Back To Main Menu"
+    echo "8. Manage Permissions"
+    echo "9. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -153,6 +154,73 @@ downgrade_app() {
     read -rp "Press Enter to continue..."
 }
 
+# Function to manage permissions of Snap apps
+manage_permissions() {
+    echo "Managing Permissions of Snap Apps..."
+    sleep 1
+    echo "-----------------------"
+    # List all the installed Snap apps
+    snap list | grep -v "^core"
+    # Ask the user to enter the name of the app they want to manage
+    read -rp "Enter the name of the app you want to manage: " app
+    echo ""
+    sleep 1
+    # Check if the app is a valid Snap app
+    if snap list | grep -q "^$app"; then
+        # List all the interfaces used by the app
+        snap connections $app
+        # Ask the user to enter the name of the interface they want to manage
+        read -rp "Enter the name of the interface you want to manage: " interface
+        echo ""
+        sleep 1
+        # Check if the interface is a valid interface for the app
+        if snap connections $app | grep -q "$interface"; then
+            # Ask the user to choose an action: connect, disconnect, or cancel
+            read -rp "Choose an action: connect, disconnect, or cancel: " action
+            echo ""
+            sleep 1
+            # Perform the action according to the user's choice
+            case $action in
+            connect)
+                # Connect the app to the interface
+                snap connect $app:$interface
+                echo "$app is connected to $interface"
+                ;;
+            disconnect)
+                # Disconnect the app from the interface
+                snap disconnect $app:$interface
+                echo "$app is disconnected from $interface"
+                ;;
+            cancel)
+                # Cancel the operation and exit the function
+                echo "Operation cancelled"
+                sleep 3
+                return
+                ;;
+            *)
+                # Invalid action, display an error message and exit the function
+                echo "Invalid action, please choose connect, disconnect, or cancel"
+                sleep 3
+                return
+                ;;
+            esac
+        else
+            # Invalid interface, display an error message and exit the function
+            echo "$interface is not a valid interface for $app"
+            sleep 3
+            return
+        fi
+    else
+        # Invalid app, display an error message and exit the function
+        echo "$app is not a valid Snap app"
+        sleep 3
+        return
+    fi
+
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
 # Go back to main menu
 main_menu() {
     chmod +x manager.sh
@@ -172,7 +240,8 @@ while true; do
     5) install_app ;;                              # Search and install app
     6) uninstall_app ;;                            # Uninstall app
     7) downgrade_app ;;                            # Downgrade app
-    8) main_menu ;;                                # Exit to main menu
+    8) manage_permissions ;;                       # Manage permissions of snap apps
+    9) main_menu ;;                                # Exit to main menu
     *) echo "Invalid choice. Please try again." ;; # Invalid choice
     esac
 done

@@ -12,6 +12,7 @@ Linux Apps Manager is a shell script program that allows you to easily manage yo
 - Search and install apps
 - Uninstall apps
 - Delete unnecessary data & cache
+- Manage permissions for snap & flatpak apps
 - Switch between different app managers
 
 ## Screenshots
