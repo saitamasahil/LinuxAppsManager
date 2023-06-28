@@ -37,6 +37,18 @@ Linux Apps Manager is a shell script program that allows you to easily manage yo
 <div align="center">
     <img src="screenshots/s7.png">
 </div>
+<div align="center">
+    <img src="screenshots/s8.png">
+</div>
+<div align="center">
+    <img src="screenshots/s9.png">
+</div>
+<div align="center">
+    <img src="screenshots/s10.png">
+</div>
+<div align="center">
+    <img src="screenshots/s11.png">
+</div>
 
 ## Usage
 
