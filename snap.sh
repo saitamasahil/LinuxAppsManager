@@ -22,7 +22,7 @@ display_menu() {
     echo "2. List All Apps Including Core Components"
     echo "3. List Installed Apps Excluding Core Components"
     echo "4. Update All Apps"
-    echo "5. Search and Install App"
+    echo "5. Search & Install App"
     echo "6. Uninstall App"
     echo "7. Downgrade App"
     echo "8. Manage Permissions"

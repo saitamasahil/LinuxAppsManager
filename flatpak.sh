@@ -22,10 +22,10 @@ display_menu() {
     echo "2. List All Apps Including Runtimes"
     echo "3. List User Installed Apps"
     echo "4. Update All Apps"
-    echo "5. Search and Install App"
+    echo "5. Search & Install App"
     echo "6. Uninstall App"
     echo "7. Downgrade App(Flathub Remote)"
-    echo "8. Delete Unused Runtime and Flatpak Cache"
+    echo "8. Delete Unused Runtime & Flatpak Cache"
     echo "9. Manage Permissions"
     echo "10. Go Back To Main Menu"
     echo ""
@@ -162,7 +162,7 @@ downgrade_app() {
 
 # Function to delete unused runtime and flatpak cache and other unnecessary things
 delete_unused() {
-    echo "Deleting Unused Runtime and Flatpak Cache..."
+    echo "Deleting Unused Runtime & Flatpak Cache..."
     sleep 1
     echo "-----------------------"
     flatpak uninstall --unused # Use flatpak command to uninstall unused runtime

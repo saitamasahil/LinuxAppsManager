@@ -21,9 +21,9 @@ display_menu() {
     echo "1. List All Apps"
     echo "2. List User Installed Apps"
     echo "3. Update All Apps"
-    echo "4. Search and Install App"
+    echo "4. Search & Install App"
     echo "5. Uninstall App"
-    echo "6. Delete Pacman Cache and Unnecessary Data"
+    echo "6. Delete Pacman Cache & Unnecessary Data"
     echo "7. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
@@ -84,7 +84,7 @@ uninstall_app() {
 
 # Function to delete Pacman cache and unnecessary data
 delete_unused() {
-    echo "Deleting Pacman Cache and Unnecessary Data..."
+    echo "Deleting Pacman Cache & Unnecessary Data..."
     sleep 1
     echo "-----------------------"
     sudo pacman -Sc                  # Use sudo and pacman command to clean up the cache
