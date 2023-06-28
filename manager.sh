@@ -43,11 +43,12 @@ echo -e "${PEACH}Select Your Choice:${NC}"
 echo "1. APT App Manager"
 echo "2. Pacman App Manager"
 echo "3. DEB App Manager"
-echo "4. Snap App Manager"
-echo "5. Flatpak App Manager"
-echo "6. Update All Packages In Your System"
-echo "7. Run Setup"
-echo "8. Exit Program"
+echo "4. DNF App Manager"
+echo "5. Snap App Manager"
+echo "6. Flatpak App Manager"
+echo "7. Update All Packages In Your System"
+echo "8. Run Setup"
+echo "9. Exit Program"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
@@ -60,12 +61,15 @@ elif [ $choice -eq 3 ]; then
     chmod +x deb.sh && ./deb.sh
 
 elif [ $choice -eq 4 ]; then
-    chmod +x snap.sh && ./snap.sh
+    chmod +x dnf.sh && ./dnf.sh
 
 elif [ $choice -eq 5 ]; then
-    chmod +x flatpak.sh && ./flatpak.sh
+    chmod +x snap.sh && ./snap.sh
 
 elif [ $choice -eq 6 ]; then
+    chmod +x flatpak.sh && ./flatpak.sh
+
+elif [ $choice -eq 7 ]; then
     # Check if apt is installed and update it
     if command -v apt &>/dev/null; then
         echo "apt is installed, updating packages..."
@@ -83,6 +87,16 @@ elif [ $choice -eq 6 ]; then
         echo ""
     else
         echo "pacman is not installed, skipping..."
+        echo ""
+    fi
+
+    # Check if dnf is installed and update it
+    if command -v dnf &>/dev/null; then
+        echo "dnf is installed, updating packages..."
+        sudo dnf upgrade --refresh
+        echo ""
+    else
+        echo "dnf is not installed, skipping..."
         echo ""
     fi
 
@@ -110,10 +124,10 @@ elif [ $choice -eq 6 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager.sh && ./manager.sh
 
-elif [ $choice -eq 7 ]; then
+elif [ $choice -eq 8 ]; then
     chmod +x setup.sh && ./setup.sh
 
-elif [ $choice -eq 8 ]; then
+elif [ $choice -eq 9 ]; then
     exit_script
 
 else
