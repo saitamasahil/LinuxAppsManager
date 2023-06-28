@@ -42,11 +42,12 @@ echo ""
 echo -e "${PEACH}Select Your Choice:${NC}"
 echo "1. APT App Manager"
 echo "2. Pacman App Manager"
-echo "3. Snap App Manager"
-echo "4. Flatpak App Manager"
-echo "5. Update All Packages In Your System"
-echo "6. Run Setup"
-echo "7. Exit Program"
+echo "3. DEB App Manager"
+echo "4. Snap App Manager"
+echo "5. Flatpak App Manager"
+echo "6. Update All Packages In Your System"
+echo "7. Run Setup"
+echo "8. Exit Program"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
@@ -56,12 +57,15 @@ elif [ $choice -eq 2 ]; then
     chmod +x pacman.sh && ./pacman.sh
 
 elif [ $choice -eq 3 ]; then
-    chmod +x snap.sh && ./snap.sh
+    chmod +x deb.sh && ./deb.sh
 
 elif [ $choice -eq 4 ]; then
-    chmod +x flatpak.sh && ./flatpak.sh
+    chmod +x snap.sh && ./snap.sh
 
 elif [ $choice -eq 5 ]; then
+    chmod +x flatpak.sh && ./flatpak.sh
+
+elif [ $choice -eq 6 ]; then
     # Check if apt is installed and update it
     if command -v apt &>/dev/null; then
         echo "apt is installed, updating packages..."
@@ -106,10 +110,10 @@ elif [ $choice -eq 5 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager.sh && ./manager.sh
 
-elif [ $choice -eq 6 ]; then
+elif [ $choice -eq 7 ]; then
     chmod +x setup.sh && ./setup.sh
 
-elif [ $choice -eq 7 ]; then
+elif [ $choice -eq 8 ]; then
     exit_script
 
 else
