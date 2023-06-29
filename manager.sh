@@ -103,7 +103,7 @@ elif [ $choice -eq 7 ]; then
     # Check if snap is installed and update it
     if command -v snap &>/dev/null; then
         echo "snap is installed, updating packages..."
-        snap refresh
+        sudo snap refresh
         echo ""
     else
         echo "snap is not installed, skipping..."
