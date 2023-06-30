@@ -33,11 +33,6 @@ display_menu() {
 
 # Function to install or uninstall snap system in a distro
 setup_snap() {
-    # Detect the distro name using lsb_release command
-    distro=$(lsb_release -si)
-    echo "Your distro is $distro."
-    sleep 1
-
     # Check if snap is already installed using command -v
     if command -v snap >/dev/null; then
         echo "Snap is already installed."
@@ -45,50 +40,65 @@ setup_snap() {
         # Ask the user if they want to uninstall snap
         read -rp "Do you want to uninstall snap? (Y/n): " choice
         case $choice in
-        [yY]*) # If yes, then use the appropriate command for the distro
+        [yY]*)
+            # If yes, then use the appropriate command for the package manager
             echo ""
             echo "NOTE: After completing the uninstallation process, don't forget to restart your machine."
             echo ""
             sleep 3
             echo "Uninstalling snap..."
             sleep 1
-            case $distro in
-            Ubuntu | Debian) # For Ubuntu or Debian based distros, use apt remove
-                sudo apt remove --purge snapd -y ;;
-            Fedora) # For Fedora based distros, use dnf remove
-                sudo dnf remove snapd -y ;;
-            Arch | Manjaro) # For Arch or Manjaro based distros, use pacman -R
-                sudo pacman -R snapd ;;
-            *) # For other distros, show an error message
-                echo "Sorry, I don't know how to uninstall snap on your distro." ;;
-            esac
+            if command -v apt >/dev/null; then
+                sudo apt remove --purge snapd -y
+            elif command -v dnf >/dev/null; then
+                sudo dnf remove snapd -y
+            elif command -v yum >/dev/null; then
+                sudo yum remove snapd -y
+            elif command -v zypper >/dev/null; then
+                sudo zypper remove snapd
+            elif command -v pacman >/dev/null; then
+                sudo pacman -R snapd
+            else
+                # For other package managers, show an error message
+                echo "Sorry, I don't know how to uninstall snap on your system."
+            fi
             ;;
-        [nN]*) # If no, then do nothing and exit the function
-            echo "OK, keeping snap." ;;
-        *) # If invalid input, show an error message and exit the function
-            echo "Invalid input. Please enter y or n." ;;
+        [nN]*)
+            # If no, then do nothing and exit the function
+            echo "OK, keeping snap."
+            ;;
+        *)
+            # If invalid input, show an error message and exit the function
+            echo "Invalid input. Please enter y or n."
+            ;;
         esac
-    else # If snap is not installed, then use the appropriate command for the distro to install it
+    else
+        # If snap is not installed, then use the appropriate command for the package manager to install it
         echo "Snap is not installed."
         sleep 1
         echo "Installing snap..."
         sleep 1
-        case $distro in
-        Ubuntu | Debian) # For Ubuntu or Debian based distros, use apt install
-            sudo apt update && sudo apt install snapd -y ;;
-        Fedora) # For Fedora based distros, use dnf install
-            sudo dnf install snapd -y ;;
-        Arch | Manjaro) # For Arch or Manjaro based distros, use pacman -S
-            sudo pacman -S snapd ;;
-        *) # For other distros, show an error message and exit the function
-            echo "Sorry, I don't know how to install snap on your distro." ;;
-        esac
+        if command -v apt >/dev/null; then
+            sudo apt update && sudo apt install snapd -y
+        elif command -v dnf >/dev/null; then
+            sudo dnf install snapd -y
+        elif command -v yum >/dev/null; then
+            sudo yum install epel-release -y && sudo yum install snapd -y
+        elif command -v zypper >/dev/null; then
+            sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy && sudo zypper --gpg-auto-import-keys refresh && sudo zypper dup --from snappy && sudo zypper install snapd
+        elif command -v pacman >/dev/null; then
+            sudo pacman -S snapd
+        else
+            # For other package managers, show an error message and exit the function
+            echo "Sorry, I don't know how to install snap on your system."
+        fi
 
-        # Add sudo snap install core & store command to activate snap on some distros
+        # Add sudo systemctl enable --now snapd.socket & store command to activate snap on some systems
         echo "Activating snap..."
         sleep 1
-        sudo snap install core
-        sudo snap install snap-store
+        sudo systemctl enable --now snapd.socket
+        sudo ln -s /var/lib/snapd/snap /snap
+
         echo ""
         echo "NOTE: To complete the installation, restart your machine."
         echo ""
