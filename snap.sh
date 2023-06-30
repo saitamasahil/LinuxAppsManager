@@ -57,7 +57,7 @@ setup_snap() {
             elif command -v zypper >/dev/null; then
                 sudo zypper remove snapd
             elif command -v pacman >/dev/null; then
-                sudo pacman -R snapd
+                sudo pacman -Rns snapd
             else
                 # For other package managers, show an error message
                 echo "Sorry, I don't know how to uninstall snap on your system."
@@ -78,6 +78,7 @@ setup_snap() {
         sleep 1
         echo "Installing snap..."
         sleep 1
+
         if command -v apt >/dev/null; then
             sudo apt update && sudo apt install snapd -y
         elif command -v dnf >/dev/null; then
@@ -87,15 +88,33 @@ setup_snap() {
         elif command -v zypper >/dev/null; then
             sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy && sudo zypper --gpg-auto-import-keys refresh && sudo zypper dup --from snappy && sudo zypper install snapd
         elif command -v pacman >/dev/null; then
-            sudo pacman -S snapd
+            # Install base-devel and git if they are not already installed
+            sudo pacman -S --needed base-devel git
+
+            # Clone the AUR package for snapd
+            git clone https://aur.archlinux.org/snapd.git
+
+            # Change to the newly created snapd directory
+            cd snapd
+
+            # Build and install the package using makepkg
+            makepkg -si
+
+            # Enable and start the snapd.socket systemd unit
+            sudo systemctl enable --now snapd.socket
+
+            # Create a symbolic link between /var/lib/snapd/snap and /snap
+            sudo ln -s /var/lib/snapd/snap /snap
+
         else
             # For other package managers, show an error message and exit the function
             echo "Sorry, I don't know how to install snap on your system."
         fi
 
-        # Add sudo systemctl enable --now snapd.socket & store command to activate snap on some systems
         echo "Activating snap..."
         sleep 1
+        sudo snap install core
+        sudo snap install snap-store
         sudo systemctl enable --now snapd.socket
         sudo ln -s /var/lib/snapd/snap /snap
 
