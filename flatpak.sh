@@ -44,6 +44,9 @@ setup_flatpak() {
         case $choice in
         [yY]*)
             # If yes, then use the appropriate command for the package manager
+            echo ""
+            echo "NOTE: After completing the uninstallation process, don't forget to restart your machine."
+            echo ""
             echo "Uninstalling flatpak..."
             sleep 1
             if command -v apt >/dev/null; then
@@ -95,6 +98,11 @@ setup_flatpak() {
         echo "Adding flathub repo..."
         sleep 1
         flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+        echo ""
+        echo "NOTE: To complete the installation, restart your machine."
+        echo ""
+        sleep 3
 
     fi
 
