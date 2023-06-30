@@ -87,6 +87,8 @@ setup_snap() {
             sudo yum install epel-release -y && sudo yum install snapd -y
         elif command -v zypper >/dev/null; then
             sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy && sudo zypper --gpg-auto-import-keys refresh && sudo zypper dup --from snappy && sudo zypper install snapd
+            sudo systemctl enable --now snapd
+            sudo systemctl enable --now snapd.apparmor
         elif command -v pacman >/dev/null; then
             # Install base-devel and git if they are not already installed
             sudo pacman -S --needed base-devel git
