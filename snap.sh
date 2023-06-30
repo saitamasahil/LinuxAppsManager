@@ -80,10 +80,11 @@ setup_snap() {
             echo "Sorry, I don't know how to install snap on your distro." ;;
         esac
 
-        # Add sudo snap install core command to activate snap on some distros
+        # Add sudo snap install core & store command to activate snap on some distros
         echo "Activating snap..."
         sleep 1
         sudo snap install core
+        sudo snap install snap-store
         echo ""
         echo "NOTE: To complete the installation, restart your machine."
         echo ""
@@ -120,7 +121,7 @@ update_apps() {
     echo "Updating All Apps..."
     sleep 1
     echo "-----------------------"
-    snap refresh # Use snap command to update all apps
+    sudo snap refresh # Use snap command to update all apps
     sleep 1
     read -rp "Press Enter to continue..."
 }
@@ -135,7 +136,7 @@ install_app() {
     sleep 1
     echo "-----------------------"
     read -rp "Enter the exact app name from above shown list to install: " app_install
-    snap install "$app_install" # Use snap command to install app
+    sudo snap install "$app_install" # Use snap command to install app
     sleep 1
     read -rp "Press Enter to continue..."
 }
@@ -143,7 +144,7 @@ install_app() {
 # Function to uninstall a specific Snap app
 uninstall_app() {
     read -rp "Enter the app name to uninstall: " app_name
-    snap remove --purge "$app_name" # Use snap command to uninstall app
+    sudo snap remove --purge "$app_name" # Use snap command to uninstall app
     sleep 1
     read -rp "Press Enter to continue..."
 }
@@ -153,7 +154,7 @@ downgrade_app() {
     read -rp "Enter the app name to downgrade: " app_name
     snap list "$app_name" --all # List the installed versions of the app
     read -rp "Enter the revision number to downgrade to: " rev_num
-    snap revert "$app_name" --revision "$rev_num" # Revert to the specified revision
+    sudo snap revert "$app_name" --revision "$rev_num" # Revert to the specified revision
     sleep 1
     read -rp "Press Enter to continue..."
 }
