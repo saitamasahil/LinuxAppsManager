@@ -29,7 +29,8 @@ display_menu() {
 
 # Function to list all installed deb apps
 list_all_apps() {
-    echo "Note: Press Q key anytime, to go back to the menu."
+    echo "NOTE: Press Q key anytime, to go back to the menu."
+    echo ""
     sleep 5
     echo "Listing All Installed DEB Packages:"
     sleep 1

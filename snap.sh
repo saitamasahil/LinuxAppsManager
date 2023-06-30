@@ -84,6 +84,10 @@ setup_snap() {
         echo "Activating snap..."
         sleep 1
         sudo snap install core
+        echo ""
+        echo "NOTE: To complete the installation, restart your machine."
+        echo ""
+        sleep 3
 
     fi
 
