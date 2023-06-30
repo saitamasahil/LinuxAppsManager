@@ -47,6 +47,7 @@ setup_flatpak() {
             echo ""
             echo "NOTE: After completing the uninstallation process, don't forget to restart your machine."
             echo ""
+            sleep 3
             echo "Uninstalling flatpak..."
             sleep 1
             if command -v apt >/dev/null; then

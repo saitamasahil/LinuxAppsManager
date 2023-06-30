@@ -42,13 +42,14 @@ echo ""
 echo -e "${PEACH}Select Your Choice:${NC}"
 echo "1. APT App Manager"
 echo "2. Pacman App Manager"
-echo "3. DEB App Manager"
-echo "4. DNF App Manager"
-echo "5. Snap App Manager"
-echo "6. Flatpak App Manager"
-echo "7. Update All Packages In Your System"
-echo "8. Run Setup"
-echo "9. Exit Program"
+echo "3. DNF App Manager"
+echo "4. DEB App Manager"
+echo "5. RPM App Manager"
+echo "6. Snap App Manager"
+echo "7. Flatpak App Manager"
+echo "8. Update All Packages In Your System"
+echo "9. Run Setup"
+echo "10. Exit Program"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
@@ -58,18 +59,21 @@ elif [ $choice -eq 2 ]; then
     chmod +x pacman.sh && ./pacman.sh
 
 elif [ $choice -eq 3 ]; then
-    chmod +x deb.sh && ./deb.sh
-
-elif [ $choice -eq 4 ]; then
     chmod +x dnf.sh && ./dnf.sh
 
+elif [ $choice -eq 4 ]; then
+    chmod +x deb.sh && ./deb.sh
+
 elif [ $choice -eq 5 ]; then
-    chmod +x snap.sh && ./snap.sh
+    chmod +x rpm.sh && ./rpm.sh
 
 elif [ $choice -eq 6 ]; then
-    chmod +x flatpak.sh && ./flatpak.sh
+    chmod +x snap.sh && ./snap.sh
 
 elif [ $choice -eq 7 ]; then
+    chmod +x flatpak.sh && ./flatpak.sh
+
+elif [ $choice -eq 8 ]; then
     # Check if apt is installed and update it
     if command -v apt &>/dev/null; then
         echo "apt is installed, updating packages..."
@@ -124,10 +128,10 @@ elif [ $choice -eq 7 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager.sh && ./manager.sh
 
-elif [ $choice -eq 8 ]; then
+elif [ $choice -eq 9 ]; then
     chmod +x setup.sh && ./setup.sh
 
-elif [ $choice -eq 9 ]; then
+elif [ $choice -eq 10 ]; then
     exit_script
 
 else
