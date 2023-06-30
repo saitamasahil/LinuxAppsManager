@@ -19,15 +19,16 @@ display_menu() {
     echo ""
     echo -e "${PEACH}Select Your Choice:${NC}"
     echo "1. Setup Flatpak"
-    echo "2. List All Apps Including Runtimes"
-    echo "3. List User Installed Apps"
-    echo "4. Update All Apps"
-    echo "5. Search & Install App"
-    echo "6. Uninstall App"
-    echo "7. Downgrade App(Flathub Remote)"
-    echo "8. Delete Unused Runtime & Flatpak Cache"
-    echo "9. Manage Permissions"
-    echo "10. Go Back To Main Menu"
+    echo "2. Add FlatHub Repository"
+    echo "3. List All Apps Including Runtimes"
+    echo "4. List User Installed Apps"
+    echo "5. Update All Apps"
+    echo "6. Search & Install App"
+    echo "7. Uninstall App"
+    echo "8. Downgrade App(Flathub Remote)"
+    echo "9. Delete Unused Runtime & Flatpak Cache"
+    echo "10. Manage Permissions"
+    echo "11. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -90,6 +91,20 @@ setup_flatpak() {
 
     sleep 1
     read -rp "Press Enter to continue..."
+}
+
+# Function to add flathub repo
+add_flathub_repo() {
+    if command -v flatpak >/dev/null; then
+        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        echo "Flathub repo added successfully"
+        sleep 1
+        read -rp "Press Enter to continue..."
+    else
+        echo "Flatpak is not installed"
+        sleep 1
+        read -rp "Press Enter to continue..."
+    fi
 }
 
 # Function to list all installed Flatpak apps including runtimes
@@ -210,15 +225,16 @@ while true; do
 
     case $choice in                                           # Handle the choice
     1) setup_flatpak ;;                                       # Install or uninstall flatpak system in a distro
-    2) list_all_apps ;;                                       # List apps
-    3) list_user_apps ;;                                      # List user apps
-    4) update_apps ;;                                         # Update all apps
-    5) install_app ;;                                         # Search and install app
-    6) uninstall_app ;;                                       # Uninstall app
-    7) downgrade_app ;;                                       # Downgrade app
-    8) delete_unused ;;                                       # Delete unused runtime and flatpak cache
-    9) manage_permissions ;;                                  # Manage permissions for Flatpak apps using Flatseal
-    10) main_menu ;;                                          # Exit to main menu
+    2) add_flathub_repo ;;                                    # Add flathub repo
+    3) list_all_apps ;;                                       # List apps
+    4) list_user_apps ;;                                      # List user apps
+    5) update_apps ;;                                         # Update all apps
+    6) install_app ;;                                         # Search and install app
+    7) uninstall_app ;;                                       # Uninstall app
+    8) downgrade_app ;;                                       # Downgrade app
+    9) delete_unused ;;                                       # Delete unused runtime and flatpak cache
+    10) manage_permissions ;;                                 # Manage permissions for Flatpak apps using Flatseal
+    11) main_menu ;;                                          # Exit to main menu
     *) echo "Invalid choice. Please try again." && sleep 3 ;; # Invalid choice
     esac
 done

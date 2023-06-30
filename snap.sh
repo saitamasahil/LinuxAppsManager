@@ -46,6 +46,10 @@ setup_snap() {
         read -rp "Do you want to uninstall snap? (Y/n): " choice
         case $choice in
         [yY]*) # If yes, then use the appropriate command for the distro
+            echo ""
+            echo "NOTE: After completing the uninstallation process, don't forget to restart your machine."
+            echo ""
+            sleep 3
             echo "Uninstalling snap..."
             sleep 1
             case $distro in
