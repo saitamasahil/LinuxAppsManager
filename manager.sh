@@ -74,33 +74,33 @@ elif [ $choice -eq 7 ]; then
     chmod +x flatpak.sh && ./flatpak.sh
 
 elif [ $choice -eq 8 ]; then
-    # Check if apt is installed and update it
+    # Check if apt is available and update it
     if command -v apt &>/dev/null; then
-        echo "apt is installed, updating packages..."
+        echo "apt is available, updating packages..."
         sudo apt update && sudo apt upgrade -y
         echo ""
     else
-        echo "apt is not installed, skipping..."
+        echo "apt is not available, skipping..."
         echo ""
     fi
 
-    # Check if pacman is installed and update it
+    # Check if pacman is available and update it
     if command -v pacman &>/dev/null; then
-        echo "pacman is installed, updating packages..."
+        echo "pacman is available, updating packages..."
         sudo pacman -Syu --noconfirm
         echo ""
     else
-        echo "pacman is not installed, skipping..."
+        echo "pacman is not available, skipping..."
         echo ""
     fi
 
-    # Check if dnf is installed and update it
+    # Check if dnf is available and update it
     if command -v dnf &>/dev/null; then
-        echo "dnf is installed, updating packages..."
+        echo "dnf is available, updating packages..."
         sudo dnf upgrade --refresh
         echo ""
     else
-        echo "dnf is not installed, skipping..."
+        echo "dnf is not available, skipping..."
         echo ""
     fi
 
