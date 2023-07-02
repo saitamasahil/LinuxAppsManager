@@ -164,7 +164,7 @@ install_app() {
     flatpak search "$app_name" # Use flatpak command to search for app name
     sleep 1
     echo "-----------------------"
-    read -rp "Enter the exact app name or application id from above shown list to install: " app_install
+    read -rp "Enter the exact application id from above shown list to install: " app_install
     flatpak install "$app_install" # Use flatpak command to install app
     sleep 1
     read -rp "Press Enter to continue..."
