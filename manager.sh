@@ -49,7 +49,8 @@ echo "6. Snap App Manager"
 echo "7. Flatpak App Manager"
 echo "8. Update All Packages In Your System"
 echo "9. Run Setup"
-echo "10. Exit Program"
+echo "10. Update Linux Apps Manager"
+echo "11. Exit Program"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
@@ -132,6 +133,19 @@ elif [ $choice -eq 9 ]; then
     chmod +x setup.sh && ./setup.sh
 
 elif [ $choice -eq 10 ]; then
+    echo -e "Downloading updates if available..."
+    sleep 1
+    echo ""
+    git pull
+    if [ $? -ne 0 ]; then
+        echo ""
+        echo -e "Checking for update failed! Possible reasons are:"
+        echo "• You have made some changes with LAM."
+        echo "• You do not have an internet connection."
+        echo "• The remote GitHub repository is not accessible."
+    fi
+
+elif [ $choice -eq 11 ]; then
     exit_script
 
 else
