@@ -78,6 +78,8 @@ setup_snap() {
         sleep 1
         echo "Installing snap..."
         sleep 1
+        echo "NOTE: Installing snap on your system may take some time. We appreciate your patience during this process."
+        sleep 3
 
         if command -v apt >/dev/null; then
             sudo apt update && sudo apt install snapd -y

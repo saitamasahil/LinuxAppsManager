@@ -25,7 +25,7 @@ display_menu() {
     echo "5. Update All Apps"
     echo "6. Search & Install App"
     echo "7. Uninstall App"
-    echo "8. Downgrade App(Flathub Remote)"
+    echo "8. Downgrade App"
     echo "9. Delete Unused Runtime & Flatpak Cache"
     echo "10. Manage Permissions"
     echo "11. Go Back To Main Menu"
