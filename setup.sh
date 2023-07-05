@@ -8,6 +8,28 @@ RED='\033[1m\033[38;5;196m'
 AQUA='\e[1;38;2;0;255;255m'
 NC='\033[0m' # No Color
 
+# Define a function to exit the script
+exit_script() {
+    clear
+    cd ~ # Change directory to home
+    # Get the name of the current shell
+    shell_name=$(basename "$SHELL")
+    # Run the exec command according to the shell
+    case $shell_name in
+    bash) exec bash ;;
+    zsh) exec zsh ;;
+    ksh) exec ksh ;;
+    csh) exec csh ;;
+    tcsh) exec tcsh ;;
+    fish) exec fish ;;
+    *) echo "Unknown shell: $shell_name" ;;
+    esac
+}
+
+# Set a trap to call the function when SIGTSTP(ctrl + z) & SIGINT(ctrl + c) is received
+trap exit_script SIGTSTP
+trap exit_script SIGINT
+
 # Go back to main menu
 main_menu() {
     chmod +x manager.sh
@@ -81,6 +103,8 @@ EOF
         echo -e "${GREEN}Fixing this issue...${NC}"
         sleep 3
         touch ~/."$shell"rc
+        echo -e "${AQUA}Issue fixed. Try option 1 again.${NC}"
+        sleep 3
         chmod +x setup.sh && ./setup.sh
     fi
 
@@ -93,11 +117,15 @@ elif [ $choice -eq 2 ]; then
         rm -rf "$pwd"
         if [ $? -eq 0 ]; then # check the exit status of rm command
             echo -e "${GREEN}Uninstalled successfully.${NC}"
+            sleep 3
+            exit_script
         else
             echo -e "${RED}Failed to uninstall!${NC}"
         fi
     else
         echo -e "${AQUA}Linux Apps Manager isn't available in your system${NC}"
+        sleep 3
+        chmod +x setup.sh && ./setup.sh
     fi
 
 elif [ $choice -eq 3 ]; then
