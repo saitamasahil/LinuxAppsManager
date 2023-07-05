@@ -18,7 +18,7 @@ display_menu() {
     printf "${GREEN}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
     echo ""
     echo -e "${PEACH}Select Your Choice:${NC}"
-    echo " 1. Setup Flatpak"
+    echo " 1. Flatpak Installer/Uninstaller"
     echo " 2. Add FlatHub Repository"
     echo " 3. List All Apps Including Runtimes"
     echo " 4. List User Installed Apps"
@@ -40,7 +40,7 @@ setup_flatpak() {
         echo "Flatpak is already installed."
         sleep 1
         # Ask the user if they want to uninstall flatpak
-        read -rp "Do you want to uninstall flatpak? (Y/n): " choice
+        read -rp "Do you want to uninstall flatpak including all flatpak apps? (Y/n): " choice
         case $choice in
         [yY]*)
             # If yes, then use the appropriate command for the package manager
@@ -49,6 +49,8 @@ setup_flatpak() {
             echo ""
             sleep 3
             echo "Uninstalling flatpak..."
+            flatpak uninstall --unused
+            flatpak uninstall --all
             sleep 1
             if command -v apt >/dev/null; then
                 sudo apt remove --purge flatpak -y
@@ -75,35 +77,49 @@ setup_flatpak() {
             ;;
         esac
     else
-        # If flatpak is not installed, then use the appropriate command for the package manager to install it
+        # If flatpak is not installed
         echo "Flatpak is not installed."
         sleep 1
-        echo "Installing flatpak..."
-        sleep 1
-        if command -v apt >/dev/null; then
-            sudo apt update && sudo apt install flatpak -y
-        elif command -v dnf >/dev/null; then
-            sudo dnf install flatpak -y
-        elif command -v yum >/dev/null; then
-            sudo yum install epel-release -y && sudo yum install flatpak -y
-        elif command -v zypper >/dev/null; then
-            sudo zypper install flatpak
-        elif command -v pacman >/dev/null; then
-            sudo pacman -S flatpak
-        else
-            # For other package managers, show an error message and exit the function
-            echo "Sorry, I don't know how to install flatpak on your system."
-        fi
+        # Ask the user if they want to install flatpak
+        read -rp "Do you want to install flatpak? (Y/n): " choice
+        case $choice in
+        [yY]*)
+            echo "Installing flatpak..."
+            sleep 1
+            if command -v apt >/dev/null; then
+                sudo apt update && sudo apt install flatpak -y
+            elif command -v dnf >/dev/null; then
+                sudo dnf install flatpak -y
+            elif command -v yum >/dev/null; then
+                sudo yum install epel-release -y && sudo yum install flatpak -y
+            elif command -v zypper >/dev/null; then
+                sudo zypper install flatpak
+            elif command -v pacman >/dev/null; then
+                sudo pacman -S flatpak
+            else
+                # For other package managers, show an error message and exit the function
+                echo "Sorry, I don't know how to install flatpak on your system."
+            fi
 
-        # Add flathub repo
-        echo "Adding flathub repo..."
-        sleep 1
-        flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+            # Add flathub repo
+            echo "Adding flathub repo..."
+            sleep 1
+            flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-        echo ""
-        echo "NOTE: To complete the installation, restart your machine."
-        echo ""
-        sleep 3
+            echo ""
+            echo "NOTE: To complete the installation, restart your machine."
+            echo ""
+            sleep 3
+            ;;
+        [nN]*)
+            # If no, then do nothing and exit the function
+            echo "OK, not installing flatpak."
+            ;;
+        *)
+            # If invalid input, show an error message and exit the function
+            echo "Invalid input. Please enter y or n."
+            ;;
+        esac
 
     fi
 
