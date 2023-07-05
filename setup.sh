@@ -82,13 +82,13 @@ lam () {
   if [ -f manager.sh ]; then
     chmod +x manager.sh && ./manager.sh
   else
-    echo "Linux Apps Manager is not available in your system"
+    echo "Linux Apps Manager is not available in your system."
   fi
 }
 EOF
-        echo -e "${AQUA}Linux Apps Manager has been successfully installed on your system.${NC}"
-        echo -e "${AQUA}To run Linux Apps Manager, type 'lam' in terminal.${NC}"
-        echo -e "${AQUA}Don't delete the directory where you cloned the repository.${NC}"
+        echo -e "${AQUA}Linux Apps Manager has been successfully installed on your system. Important notes:${NC}"
+        echo "• To run Linux Apps Manager, type 'lam' in terminal."
+        echo "• Don't delete the directory where you cloned the repository."
         echo ""
         read -n 1 -s -r -p "Press any key to continue..."
         echo
@@ -123,7 +123,7 @@ elif [ $choice -eq 2 ]; then
             echo -e "${RED}Failed to uninstall!${NC}"
         fi
     else
-        echo -e "${AQUA}Linux Apps Manager isn't available in your system${NC}"
+        echo -e "${AQUA}Linux Apps Manager isn't available in your system.${NC}"
         sleep 3
         chmod +x setup.sh && ./setup.sh
     fi

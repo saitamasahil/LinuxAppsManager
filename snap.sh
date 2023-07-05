@@ -252,16 +252,16 @@ manage_permissions() {
             connect)
                 # Connect the app to the interface
                 snap connect $app:$interface
-                echo -e "${AQUA}$app is connected to $interface${NC}"
+                echo -e "${AQUA}$app is connected to $interface.${NC}"
                 ;;
             disconnect)
                 # Disconnect the app from the interface
                 snap disconnect $app:$interface
-                echo -e "${AQUA}$app is disconnected from $interface${NC}"
+                echo -e "${AQUA}$app is disconnected from $interface.${NC}"
                 ;;
             cancel)
                 # Cancel the operation and exit the function
-                echo -e "${AQUA}Operation cancelled${NC}"
+                echo -e "${AQUA}Operation cancelled!${NC}"
                 sleep 3
                 return
                 ;;
@@ -274,13 +274,13 @@ manage_permissions() {
             esac
         else
             # Invalid interface, display an error message and exit the function
-            echo -e "${RED}$interface is not a valid interface for $app${NC}"
+            echo -e "${RED}$interface is not a valid interface for $app.${NC}"
             sleep 3
             return
         fi
     else
         # Invalid app, display an error message and exit the function
-        echo -e "${RED}$app is not a valid Snap app${NC}"
+        echo -e "${RED}$app is not a valid Snap app.${NC}"
         sleep 3
         return
     fi
