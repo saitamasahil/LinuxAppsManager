@@ -3,6 +3,8 @@
 # Define some color variables
 Magenta='\033[1m\033[38;5;201m'
 PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
 NC='\033[0m' # No Color
 
 # Function to display a menu with options
@@ -29,9 +31,10 @@ display_menu() {
 
 # Function to list all installed rpm apps
 list_all_apps() {
-    echo "Listing All Installed RPM Packages:"
+    echo ""
+    echo -e "${GREEN}Listing All Installed RPM Packages:${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     rpm -qa # List all packages using rpm
     sleep 1
     read -rp "Press Enter to continue..."
@@ -39,10 +42,11 @@ list_all_apps() {
 
 # Function to search a specific installed rpm app
 search_app() {
+    echo ""
     read -rp "Enter the name or keyword of the RPM package to search: " keyword
-    echo "Searching for $keyword..."
+    echo -e "${GREEN}Searching for $keyword...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     rpm -qa | grep "$keyword" # Search for packages using rpm and grep
     sleep 1
     read -rp "Press Enter to continue..."
@@ -50,6 +54,7 @@ search_app() {
 
 # Function to install a rpm file from local path or URL
 install_app() {
+    echo ""
     read -rp "Enter the local path or URL of the RPM file: " file_path
     if [[ $file_path == http* ]]; then # If file path is a URL
         wget "$file_path"              # Download the file using wget
@@ -65,6 +70,7 @@ install_app() {
 
 # Function to uninstall a specific rpm app
 uninstall_app() {
+    echo ""
     read -rp "Enter the name of the RPM package to remove: " package_name
     sudo rpm -e "$package_name" # Remove the package using rpm
     sleep 1
@@ -82,12 +88,12 @@ while true; do
     display_menu # Display the menu
     read -r choice
 
-    case $choice in                                           # Handle the choice
-    1) list_all_apps ;;                                       # List all apps
-    2) search_app ;;                                          # Search for specific installed app
-    3) install_app ;;                                         # Install app
-    4) uninstall_app ;;                                       # Uninstall app
-    5) main_menu ;;                                           # Exit to main menu
-    *) echo "Invalid choice. Please try again." && sleep 3 ;; # Invalid choice
+    case $choice in                                                                    # Handle the choice
+    1) list_all_apps ;;                                                                # List all apps
+    2) search_app ;;                                                                   # Search for specific installed app
+    3) install_app ;;                                                                  # Install app
+    4) uninstall_app ;;                                                                # Uninstall app
+    5) main_menu ;;                                                                    # Exit to main menu
+    *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;; # Invalid choice
     esac
 done

@@ -3,6 +3,8 @@
 # Define some color variables
 ORANGE='\033[1m\033[38;5;214m'
 PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
 NC='\033[0m' # No Color
 
 # Function to display a menu with options
@@ -31,9 +33,10 @@ display_menu() {
 
 # Function to list all installed apt apps
 list_all_apps() {
-    echo "Listing All Apps:"
+    echo ""
+    echo -e "${GREEN}Listing All Apps:${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     apt list --installed # Use apt command to list all apps
     sleep 1
     read -rp "Press Enter to continue..."
@@ -41,9 +44,10 @@ list_all_apps() {
 
 # Function to list user installed apt apps
 list_user_apps() {
-    echo "Listing User Installed Apps:"
+    echo ""
+    echo -e "${GREEN}Listing User Installed Apps:${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     apt list --manual-installed # Use apt command to list user apps
     sleep 1
     read -rp "Press Enter to continue..."
@@ -51,9 +55,10 @@ list_user_apps() {
 
 # Function to update all installed apt apps
 update_apps() {
-    echo "Updating All Apps..."
+    echo ""
+    echo -e "${GREEN}Updating All Apps...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     sudo apt update     # Use sudo and apt command to update the package lists
     sudo apt upgrade -y # Use sudo and apt command to upgrade all apps with yes option
     sleep 1
@@ -62,13 +67,14 @@ update_apps() {
 
 # Function to search & install a specific apt app
 install_app() {
+    echo ""
     read -rp "Enter the app name to search: " app_name
-    echo "Searching for $app_name..."
+    echo -e "${GREEN}Searching for $app_name...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     apt search "$app_name" # Use apt command to search for app name
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     read -rp "Enter the exact app name from above shown list to install: " app_install
     sudo apt install "$app_install" # Use sudo and apt command to install app
     sleep 1
@@ -77,6 +83,7 @@ install_app() {
 
 # Function to uninstall a specific apt app
 uninstall_app() {
+    echo ""
     read -rp "Enter the app name to uninstall: " app_name
     sudo apt remove "$app_name" # Use sudo and apt command to uninstall app
     sleep 1
@@ -85,9 +92,10 @@ uninstall_app() {
 
 # Function to delete APT cache and unnecessary data
 delete_unused() {
-    echo "Deleting APT Cache & Unnecessary Data..."
+    echo ""
+    echo -e "${GREEN}Deleting APT Cache & Unnecessary Data...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     sudo apt autoclean                    # Use sudo and apt command to clean up partial packages and cache
     sudo apt autoremove                   # Use sudo and apt command to remove unused packages
     sudo rm -rf /var/cache/apt/archives/* # Use sudo and rm command to remove archived packages
@@ -106,14 +114,14 @@ while true; do
     display_menu # Display the menu
     read -r choice
 
-    case $choice in                                           # Handle the choice
-    1) list_all_apps ;;                                       # List all apps
-    2) list_user_apps ;;                                      # List user apps
-    3) update_apps ;;                                         # Update all apps
-    4) install_app ;;                                         # Install app
-    5) uninstall_app ;;                                       # Uninstall app
-    6) delete_unused ;;                                       # Delete apt cache and unnecessary data
-    7) main_menu ;;                                           # Exit to main menu
-    *) echo "Invalid choice. Please try again." && sleep 3 ;; # Invalid choice
+    case $choice in                                                                    # Handle the choice
+    1) list_all_apps ;;                                                                # List all apps
+    2) list_user_apps ;;                                                               # List user apps
+    3) update_apps ;;                                                                  # Update all apps
+    4) install_app ;;                                                                  # Install app
+    5) uninstall_app ;;                                                                # Uninstall app
+    6) delete_unused ;;                                                                # Delete apt cache and unnecessary data
+    7) main_menu ;;                                                                    # Exit to main menu
+    *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;; # Invalid choice
     esac
 done

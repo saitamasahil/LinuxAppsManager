@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 
 # Define some color variables
-PINK='\033[1m\033[38;5;206m'
+PINK='\e[1;38;2;255;105;180m'
 PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
 NC='\033[0m' # No Color
 
 # Function to display a menu with options
@@ -31,9 +33,10 @@ display_menu() {
 
 # Function to list all installed pacman apps
 list_all_apps() {
-    echo "Listing All Apps:"
+    echo ""
+    echo -e "${GREEN}Listing All Apps:${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     pacman -Q # Use pacman command to list all apps
     sleep 1
     read -rp "Press Enter to continue..."
@@ -41,9 +44,10 @@ list_all_apps() {
 
 # Function to list user installed pacman apps
 list_user_apps() {
-    echo "Listing User Installed Apps:"
+    echo ""
+    echo -e "${GREEN}Listing User Installed Apps:${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     pacman -Qe # Use pacman command to list user apps
     sleep 1
     read -rp "Press Enter to continue..."
@@ -51,9 +55,10 @@ list_user_apps() {
 
 # Function to update all installed pacman apps
 update_apps() {
-    echo "Updating All Apps..."
+    echo ""
+    echo -e "${GREEN}Updating All Apps...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     sudo pacman -Syu --noconfirm # Use sudo and pacman command to update and upgrade all apps
     sleep 1
     read -rp "Press Enter to continue..."
@@ -61,13 +66,14 @@ update_apps() {
 
 # Function to search & install a specific pacman app
 install_app() {
+    echo ""
     read -rp "Enter the app name to search: " app_name
-    echo "Searching for $app_name..."
+    echo -e "${GREEN}Searching for $app_name...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     pacman -Ss "$app_name" # Use pacman command to search for app name
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     read -rp "Enter the exact app name from above shown list to install: " app_install
     sudo pacman -S "$app_install" # Use sudo and pacman command to install app
     sleep 1
@@ -76,6 +82,7 @@ install_app() {
 
 # Function to uninstall a specific pacman app
 uninstall_app() {
+    echo ""
     read -rp "Enter the app name to uninstall: " app_name
     sudo pacman -R "$app_name" # Use sudo and pacman command to uninstall app
     sleep 1
@@ -84,9 +91,10 @@ uninstall_app() {
 
 # Function to delete Pacman cache and unnecessary data
 delete_unused() {
-    echo "Deleting Pacman Cache & Unnecessary Data..."
+    echo ""
+    echo -e "${GREEN}Deleting Pacman Cache & Unnecessary Data...${NC}"
     sleep 1
-    echo "-----------------------"
+    echo -e "${GREEN}-----------------------${NC}"
     sudo pacman -Sc                  # Use sudo and pacman command to clean up the cache
     sudo pacman -Rns $(pacman -Qtdq) # Use sudo and pacman command to remove orphan packages
     sleep 1
@@ -104,14 +112,14 @@ while true; do
     display_menu # Display the menu
     read -r choice
 
-    case $choice in                                           # Handle the choice
-    1) list_all_apps ;;                                       # List all apps
-    2) list_user_apps ;;                                      # List user apps
-    3) update_apps ;;                                         # Update all apps
-    4) install_app ;;                                         # Install app
-    5) uninstall_app ;;                                       # Uninstall app
-    6) delete_unused ;;                                       # Delete pacman cache and unnecessary data
-    7) main_menu ;;                                           # Exit to main menu
-    *) echo "Invalid choice. Please try again." && sleep 3 ;; # Invalid choice
+    case $choice in                                                                    # Handle the choice
+    1) list_all_apps ;;                                                                # List all apps
+    2) list_user_apps ;;                                                               # List user apps
+    3) update_apps ;;                                                                  # Update all apps
+    4) install_app ;;                                                                  # Install app
+    5) uninstall_app ;;                                                                # Uninstall app
+    6) delete_unused ;;                                                                # Delete pacman cache and unnecessary data
+    7) main_menu ;;                                                                    # Exit to main menu
+    *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;; # Invalid choice
     esac
 done

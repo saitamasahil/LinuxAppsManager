@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
 # Define some color variables
-PURPLE='\033[1m\033[38;5;140m'
+PURPLE='\033[1m\033[35m'
 PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
+AQUA='\e[1;38;2;0;255;255m'
 NC='\033[0m' # No Color
 
 # Define a function to exit the script
@@ -76,57 +79,58 @@ elif [ $choice -eq 7 ]; then
     chmod +x flatpak.sh && ./flatpak.sh
 
 elif [ $choice -eq 8 ]; then
+    echo ""
     # Check if apt is available and update it
     if command -v apt &>/dev/null; then
-        echo "apt is available, updating packages..."
+        echo -e "${GREEN}apt is available, updating packages...${NC}"
         sudo apt update && sudo apt upgrade -y
         echo ""
     else
-        echo "apt is not available, skipping..."
+        echo -e "${RED}apt is not available, skipping...${NC}"
         echo ""
     fi
 
     # Check if pacman is available and update it
     if command -v pacman &>/dev/null; then
-        echo "pacman is available, updating packages..."
+        echo -e "${GREEN}pacman is available, updating packages...${NC}"
         sudo pacman -Syu --noconfirm
         echo ""
     else
-        echo "pacman is not available, skipping..."
+        echo -e "${RED}pacman is not available, skipping...${NC}"
         echo ""
     fi
 
     # Check if dnf is available and update it
     if command -v dnf &>/dev/null; then
-        echo "dnf is available, updating packages..."
+        echo -e "${GREEN}dnf is available, updating packages...${NC}"
         sudo dnf upgrade --refresh
         echo ""
     else
-        echo "dnf is not available, skipping..."
+        echo -e "${RED}dnf is not available, skipping...${NC}"
         echo ""
     fi
 
     # Check if snap is installed and update it
     if command -v snap &>/dev/null; then
-        echo "snap is installed, updating packages..."
+        echo -e "${GREEN}snap is installed, updating packages...${NC}"
         sudo snap refresh
         echo ""
     else
-        echo "snap is not installed, skipping..."
+        echo -e "${RED}snap is not installed, skipping...${NC}"
         echo ""
     fi
 
     # Check if flatpak is installed and update it
     if command -v flatpak &>/dev/null; then
-        echo "flatpak is installed, updating packages..."
+        echo -e "${GREEN}flatpak is installed, updating packages...${NC}"
         flatpak update -y
         echo ""
     else
-        echo "flatpak is not installed, skipping..."
+        echo -e "${RED}flatpak is not installed, skipping...${NC}"
         echo ""
     fi
 
-    echo "All done!"
+    echo -e "${AQUA}All done!${NC}"
     read -rp "Press Enter to continue..."
     chmod +x manager.sh && ./manager.sh
 
@@ -134,23 +138,27 @@ elif [ $choice -eq 9 ]; then
     chmod +x setup.sh && ./setup.sh
 
 elif [ $choice -eq 10 ]; then
-    echo -e "Downloading updates if available..."
+    echo ""
+    echo -e "${GREEN}Downloading updates if available...${NC}"
     sleep 1
     echo ""
     git pull
     if [ $? -ne 0 ]; then
         echo ""
-        echo -e "Checking for update failed! Possible reasons are:"
+        echo -e "${RED}Checking for update failed! Possible reasons are:${NC}"
         echo "• You have made some changes with LAM."
         echo "• You do not have an internet connection."
         echo "• The remote GitHub repository is not accessible."
     fi
+    read -rp "Press Enter to continue..."
+    chmod +x manager.sh && ./manager.sh
 
 elif [ $choice -eq 11 ]; then
     exit_script
 
 else
-    echo "Invalid choice. Please try again."
+    echo ""
+    echo -e "${RED}Invalid choice. Please try again.${NC}"
     sleep 3
     chmod +x manager.sh && ./manager.sh
 fi

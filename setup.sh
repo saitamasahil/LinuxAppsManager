@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 # Define some color variables
-RED='\033[1m\033[38;5;196m'
-YELLOW='\033[1m\033[38;5;226m'
+TOMATO='\e[1;38;2;255;99;71m'
 PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
+AQUA='\e[1;38;2;0;255;255m'
 NC='\033[0m' # No Color
 
 # Go back to main menu
@@ -24,9 +26,9 @@ echo ""
 COLUMNS=$(tput cols)
 t1="=========================="
 t2="Linux Apps Manager Setup"
-printf "${RED}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
-printf "${RED}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
-printf "${RED}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+printf "${TOMATO}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+printf "${TOMATO}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
+printf "${TOMATO}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
 echo ""
 
 # Ask user what option they want to choose
@@ -37,6 +39,7 @@ echo " 3. Go Back To Main Menu"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
+    echo ""
     # This script adds the lam function definition to the appropriate shell configuration file
 
     # Check if the configuration file exists
@@ -61,9 +64,9 @@ lam () {
   fi
 }
 EOF
-        echo -e "${YELLOW}Linux Apps Manager has been successfully installed on your system.${NC}"
-        echo -e "${YELLOW}To run Linux Apps Manager, type 'lam' in terminal.${NC}"
-        echo -e "${YELLOW}Don't delete the directory where you cloned the repository.${NC}"
+        echo -e "${AQUA}Linux Apps Manager has been successfully installed on your system.${NC}"
+        echo -e "${AQUA}To run Linux Apps Manager, type 'lam' in terminal.${NC}"
+        echo -e "${AQUA}Don't delete the directory where you cloned the repository.${NC}"
         echo ""
         read -n 1 -s -r -p "Press any key to continue..."
         echo
@@ -73,33 +76,36 @@ EOF
 
     else
         # Print an error message & make ."$shell"rc file
-        echo -e "${PURPLE}."$shell"rc file not found.${NC}"
-        echo -e "${GREEN}Fixing this issue.${NC}"
+        echo -e "${RED}."$shell"rc file not found.${NC}"
+        sleep 1
+        echo -e "${GREEN}Fixing this issue...${NC}"
         sleep 3
         touch ~/."$shell"rc
         chmod +x alias.sh && ./alias.sh
     fi
 
 elif [ $choice -eq 2 ]; then
+    echo ""
     # Check if the lam function is defined in the .shellrc file
     if grep -q "lam ()" ~/."$shell"rc; then
         # Delete function and directory
         sed -i '/lam ()/,/^}/d' ~/."$shell"rc
         rm -rf "$pwd"
         if [ $? -eq 0 ]; then # check the exit status of rm command
-            echo "Uninstalled successfully."
+            echo -e "${GREEN}Uninstalled successfully.${NC}"
         else
-            echo "Failed to uninstall!"
+            echo -e "${RED}Failed to uninstall!${NC}"
         fi
     else
-        echo "Linux Apps Manager isn't available in your system"
+        echo -e "${AQUA}Linux Apps Manager isn't available in your system${NC}"
     fi
 
 elif [ $choice -eq 3 ]; then
     main_menu
 
 else
-    echo "Invalid choice. Please try again."
+    echo ""
+    echo -e "${RED}Invalid choice. Please try again.${NC}"
     sleep 3
     chmod +x setup.sh && ./setup.sh
 fi
