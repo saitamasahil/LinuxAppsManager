@@ -81,7 +81,7 @@ EOF
         echo -e "${GREEN}Fixing this issue...${NC}"
         sleep 3
         touch ~/."$shell"rc
-        chmod +x alias.sh && ./alias.sh
+        chmod +x setup.sh && ./setup.sh
     fi
 
 elif [ $choice -eq 2 ]; then
