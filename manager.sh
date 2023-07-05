@@ -40,17 +40,18 @@ echo ""
 
 # Ask user what option they want to choose
 echo -e "${PEACH}Select Your Choice:${NC}"
-echo "1. APT App Manager"
-echo "2. Pacman App Manager"
-echo "3. DNF App Manager"
-echo "4. DEB App Manager"
-echo "5. RPM App Manager"
-echo "6. Snap App Manager"
-echo "7. Flatpak App Manager"
-echo "8. Update All Packages In Your System"
-echo "9. Run Setup"
+echo " 1. APT App Manager"
+echo " 2. Pacman App Manager"
+echo " 3. DNF App Manager"
+echo " 4. DEB App Manager"
+echo " 5. RPM App Manager"
+echo " 6. Snap App Manager"
+echo " 7. Flatpak App Manager"
+echo " 8. Update All Packages In Your System"
+echo " 9. Run Setup"
 echo "10. Update Linux Apps Manager"
 echo "11. Exit Program"
+echo ""
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then

@@ -31,9 +31,9 @@ echo ""
 
 # Ask user what option they want to choose
 echo -e "${PEACH}Select Your Choice:${NC}"
-echo "1. Install Linux Apps Manager In System"
-echo "2. Uninstall Linux Apps Manager From System"
-echo "3. Go Back To Main Menu"
+echo " 1. Install Linux Apps Manager In System"
+echo " 2. Uninstall Linux Apps Manager From System"
+echo " 3. Go Back To Main Menu"
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
