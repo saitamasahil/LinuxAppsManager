@@ -18,7 +18,7 @@ display_menu() {
     printf "${BLUE}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
     echo ""
     echo -e "${PEACH}Select Your Choice:${NC}"
-    echo "1. Setup Snap"
+    echo "1. Snap Installer/Uninstaller"
     echo "2. List All Apps Including Core Components"
     echo "3. List Installed Apps Excluding Core Components"
     echo "4. Update All Apps"
@@ -73,59 +73,74 @@ setup_snap() {
             ;;
         esac
     else
-        # If snap is not installed, then use the appropriate command for the package manager to install it
+        # If snap is not installed
         echo "Snap is not installed."
         sleep 1
-        echo "Installing snap..."
-        sleep 1
-        echo "NOTE: Installing snap on your system may take some time. We appreciate your patience during this process."
-        sleep 3
+        # Ask the user if they want to install snap
+        read -rp "Do you want to install snap? (Y/n): " choice
+        case $choice in
+        [yY]*)
+            # If yes, then use the appropriate command to install snap
+            echo "Installing snap..."
+            sleep 1
+            echo "NOTE: Installing snap on your system may take some time. We appreciate your patience during this process."
+            sleep 3
 
-        if command -v apt >/dev/null; then
-            sudo apt update && sudo apt install snapd -y
-        elif command -v dnf >/dev/null; then
-            sudo dnf install snapd -y
-        elif command -v yum >/dev/null; then
-            sudo yum install epel-release -y && sudo yum install snapd -y
-        elif command -v zypper >/dev/null; then
-            sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy && sudo zypper --gpg-auto-import-keys refresh && sudo zypper dup --from snappy && sudo zypper install snapd
-            sudo systemctl enable --now snapd
-            sudo systemctl enable --now snapd.apparmor
-        elif command -v pacman >/dev/null; then
-            # Install base-devel and git if they are not already installed
-            sudo pacman -S --needed base-devel git
+            if command -v apt >/dev/null; then
+                sudo apt update && sudo apt install snapd -y
+            elif command -v dnf >/dev/null; then
+                sudo dnf install snapd -y
+            elif command -v yum >/dev/null; then
+                sudo yum install epel-release -y && sudo yum install snapd -y
+            elif command -v zypper >/dev/null; then
+                sudo zypper addrepo --refresh https://download.opensuse.org/repositories/system:/snappy/openSUSE_Leap_15.2 snappy && sudo zypper --gpg-auto-import-keys refresh && sudo zypper dup --from snappy && sudo zypper install snapd
+                sudo systemctl enable --now snapd
+                sudo systemctl enable --now snapd.apparmor
+            elif command -v pacman >/dev/null; then
+                # Install base-devel and git if they are not already installed
+                sudo pacman -S --needed base-devel git
 
-            # Clone the AUR package for snapd
-            git clone https://aur.archlinux.org/snapd.git
+                # Clone the AUR package for snapd
+                git clone https://aur.archlinux.org/snapd.git
 
-            # Change to the newly created snapd directory
-            cd snapd
+                # Change to the newly created snapd directory
+                cd snapd
 
-            # Build and install the package using makepkg
-            makepkg -si
+                # Build and install the package using makepkg
+                makepkg -si
 
-            # Enable and start the snapd.socket systemd unit
+                # Enable and start the snapd.socket systemd unit
+                sudo systemctl enable --now snapd.socket
+
+                # Create a symbolic link between /var/lib/snapd/snap and /snap
+                sudo ln -s /var/lib/snapd/snap /snap
+
+            else
+                # For other package managers, show an error message and exit the function
+                echo "Sorry, I don't know how to install snap on your system."
+            fi
+
+            echo "Activating snap..."
+            sleep 1
+            sudo snap install core
+            sudo snap install snap-store
             sudo systemctl enable --now snapd.socket
-
-            # Create a symbolic link between /var/lib/snapd/snap and /snap
             sudo ln -s /var/lib/snapd/snap /snap
 
-        else
-            # For other package managers, show an error message and exit the function
-            echo "Sorry, I don't know how to install snap on your system."
-        fi
-
-        echo "Activating snap..."
-        sleep 1
-        sudo snap install core
-        sudo snap install snap-store
-        sudo systemctl enable --now snapd.socket
-        sudo ln -s /var/lib/snapd/snap /snap
-
-        echo ""
-        echo "NOTE: To complete the installation, restart your machine."
-        echo ""
-        sleep 3
+            echo ""
+            echo "NOTE: To complete the installation, restart your machine."
+            echo ""
+            sleep 3
+            ;;
+        [nN]*)
+            # If no, then do nothing and exit the function
+            echo "OK, not installing snap."
+            ;;
+        *)
+            # If invalid input, show an error message and exit the function
+            echo "Invalid input. Please enter y or n."
+            ;;
+        esac
 
     fi
 
