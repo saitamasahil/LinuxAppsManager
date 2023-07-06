@@ -291,8 +291,8 @@ manage_permissions() {
 
 # Go back to main menu
 main_menu() {
-    chmod +x manager.sh
-    ./manager.sh
+    chmod +x manager
+    ./manager
 }
 
 # Main loop

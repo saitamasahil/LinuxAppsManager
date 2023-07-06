@@ -57,10 +57,10 @@ To use Linux Apps Manager, you have two options:
 ### Option 1: Run it manually
 
 1. Clone this repository to your desired location.
-2. Run the manager.sh script with the following command:
+2. Run the manager script with the following command:
 
 ```sh
-chmod +x manager.sh && ./manager.sh
+chmod +x manager && ./manager
 ```
 
 3. Choose the app manager you want to use from the main menu.
@@ -70,10 +70,10 @@ chmod +x manager.sh && ./manager.sh
 ### Option 2: Install it permanently
 
 1. Clone this repository to your desired location.
-2. Run the manager.sh script with the following command:
+2. Run the manager script with the following command:
 
 ```sh
-chmod +x manager.sh && ./manager.sh
+chmod +x manager && ./manager
 ```
 
 3. Choose the option 9 to run setup.

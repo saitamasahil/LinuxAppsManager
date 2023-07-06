@@ -32,8 +32,8 @@ trap exit_script SIGINT
 
 # Go back to main menu
 main_menu() {
-    chmod +x manager.sh
-    ./manager.sh
+    chmod +x manager
+    ./manager
 }
 
 # Get the name of the current shell
@@ -78,9 +78,9 @@ lam () {
   # Go to the saved directory
   cd "$pwd"
 
-  # Check if manager.sh exists
-  if [ -f manager.sh ]; then
-    chmod +x manager.sh && ./manager.sh
+  # Check if manager exists
+  if [ -f manager ]; then
+    chmod +x manager && ./manager
   else
     echo "Linux Apps Manager is not available in your system."
   fi
@@ -105,7 +105,7 @@ EOF
         touch ~/."$shell"rc
         echo -e "${AQUA}Issue fixed. Try option 1 again.${NC}"
         sleep 3
-        chmod +x setup.sh && ./setup.sh
+        chmod +x setup && ./setup
     fi
 
 elif [ $choice -eq 2 ]; then
@@ -125,7 +125,7 @@ elif [ $choice -eq 2 ]; then
     else
         echo -e "${AQUA}Linux Apps Manager isn't available in your system.${NC}"
         sleep 3
-        chmod +x setup.sh && ./setup.sh
+        chmod +x setup && ./setup
     fi
 
 elif [ $choice -eq 3 ]; then
@@ -135,5 +135,5 @@ else
     echo ""
     echo -e "${RED}Invalid choice. Please try again.${NC}"
     sleep 3
-    chmod +x setup.sh && ./setup.sh
+    chmod +x setup && ./setup
 fi

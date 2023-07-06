@@ -58,25 +58,25 @@ echo ""
 read -p "Enter your choice: " choice
 
 if [ $choice -eq 1 ]; then
-    chmod +x apt.sh && ./apt.sh
+    chmod +x apt && ./apt
 
 elif [ $choice -eq 2 ]; then
-    chmod +x pacman.sh && ./pacman.sh
+    chmod +x pacman && ./pacman
 
 elif [ $choice -eq 3 ]; then
-    chmod +x dnf.sh && ./dnf.sh
+    chmod +x dnf && ./dnf
 
 elif [ $choice -eq 4 ]; then
-    chmod +x deb.sh && ./deb.sh
+    chmod +x deb && ./deb
 
 elif [ $choice -eq 5 ]; then
-    chmod +x rpm.sh && ./rpm.sh
+    chmod +x rpm && ./rpm
 
 elif [ $choice -eq 6 ]; then
-    chmod +x snap.sh && ./snap.sh
+    chmod +x snap && ./snap
 
 elif [ $choice -eq 7 ]; then
-    chmod +x flatpak.sh && ./flatpak.sh
+    chmod +x flatpak && ./flatpak
 
 elif [ $choice -eq 8 ]; then
     echo ""
@@ -132,10 +132,10 @@ elif [ $choice -eq 8 ]; then
 
     echo -e "${AQUA}All done!${NC}"
     read -rp "Press Enter to continue..."
-    chmod +x manager.sh && ./manager.sh
+    chmod +x manager && ./manager
 
 elif [ $choice -eq 9 ]; then
-    chmod +x setup.sh && ./setup.sh
+    chmod +x setup && ./setup
 
 elif [ $choice -eq 10 ]; then
     echo ""
@@ -151,7 +151,7 @@ elif [ $choice -eq 10 ]; then
         echo "• The remote GitHub repository is not accessible."
     fi
     read -rp "Press Enter to continue..."
-    chmod +x manager.sh && ./manager.sh
+    chmod +x manager && ./manager
 
 elif [ $choice -eq 11 ]; then
     exit_script
@@ -160,5 +160,5 @@ else
     echo ""
     echo -e "${RED}Invalid choice. Please try again.${NC}"
     sleep 3
-    chmod +x manager.sh && ./manager.sh
+    chmod +x manager && ./manager
 fi
