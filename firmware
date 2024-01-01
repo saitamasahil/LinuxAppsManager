@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 # Define some color variables
-GOLD='\033[1m\033[38;2;255;215;0m'
+YELLOW='\033[1m\033[38;5;226m'
+PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
 RED='\033[1m\033[38;5;196m'
-AQUA='\e[1;38;2;0;255;255m'
 NC='\033[0m' # No Color
 
 # Function to check if fwupdmgr is available
@@ -18,7 +19,8 @@ check_fwupdmgr() {
             install_fwupdmgr
             ;;
         *)
-            exit
+            chmod +x manager
+            ./manager
             ;;
         esac
     fi
@@ -26,7 +28,7 @@ check_fwupdmgr() {
 
 # Function to install fwupdmgr
 install_fwupdmgr() {
-    echo -e "${AQUA}Installing fwupdmgr...${NC}"
+    echo -e "${GREEN}Installing fwupdmgr...${NC}"
     sleep 1
     # Add installation commands based on the package manager used by the system
     if command -v apt >/dev/null; then
@@ -41,7 +43,9 @@ install_fwupdmgr() {
         sudo pacman -S fwupd
     else
         echo -e "${RED}Sorry, I don't know how to install fwupdmgr on your system.${NC}"
-        exit
+        sleep 3
+        chmod +x manager
+        ./manager
     fi
 }
 
@@ -52,16 +56,17 @@ display_menu() {
     COLUMNS=$(tput cols)
     t1="====================="
     t2="Firmware Manager"
-    printf "${GOLD}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
-    printf "${GOLD}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
-    printf "${GOLD}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    printf "${YELLOW}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    printf "${YELLOW}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
+    printf "${YELLOW}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
     echo ""
-    echo -e "${AQUA}Select Your Choice:${NC}"
+    echo -e "${PEACH}Select Your Choice:${NC}"
     echo " 1. Check for Firmware Updates"
     echo " 2. Download and Install Firmware Updates"
     echo " 3. Show More Info about Firmware Updates"
-    echo " 4. Rollback Firmware"
-    echo " 5. Exit"
+    echo " 4. Refresh Metadata"
+    echo " 5. Rollback Firmware"
+    echo " 6. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -70,7 +75,7 @@ display_menu() {
 check_firmware_updates() {
     check_fwupdmgr
     echo ""
-    echo -e "${AQUA}Checking for Firmware Updates...${NC}"
+    echo -e "${GREEN}Checking for Firmware Updates...${NC}"
     sleep 1
     fwupdmgr get-devices
     sleep 1
@@ -81,7 +86,7 @@ check_firmware_updates() {
 install_firmware_updates() {
     check_fwupdmgr
     echo ""
-    echo -e "${AQUA}Downloading and Installing Firmware Updates...${NC}"
+    echo -e "${GREEN}Downloading and Installing Firmware Updates...${NC}"
     sleep 1
     sudo fwupdmgr update
     sleep 1
@@ -92,9 +97,20 @@ install_firmware_updates() {
 show_more_info() {
     check_fwupdmgr
     echo ""
-    echo -e "${AQUA}Showing More Information about Firmware Updates...${NC}"
+    echo -e "${GREEN}Showing More Information about Firmware Updates...${NC}"
     sleep 1
     sudo fwupdmgr get-updates
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to refresh metadata
+refresh_metadata() {
+    check_fwupdmgr
+    echo ""
+    echo -e "${GREEN}Refreshing Firmware Metadata...${NC}"
+    sleep 1
+    sudo fwupdmgr refresh --force
     sleep 1
     read -rp "Press Enter to continue..."
 }
@@ -103,11 +119,17 @@ show_more_info() {
 perform_rollback() {
     check_fwupdmgr
     echo ""
-    echo -e "${AQUA}Performing Firmware Rollback...${NC}"
+    echo -e "${GREEN}Performing Firmware Rollback...${NC}"
     sleep 1
     sudo fwupdmgr downgrade
     sleep 1
     read -rp "Press Enter to continue..."
+}
+
+# Go back to main menu
+main_menu() {
+    chmod +x manager
+    ./manager
 }
 
 # Main loop
@@ -119,8 +141,9 @@ while true; do
     1) check_firmware_updates ;;
     2) install_firmware_updates ;;
     3) show_more_info ;;
-    4) perform_rollback ;;
-    5) exit ;;
+    4) refresh_metadata ;;
+    5) perform_rollback ;;
+    6) main_menu ;;
     *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;;
     esac
 done
