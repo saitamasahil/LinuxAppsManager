@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+# Define some color variables
+GOLD='\033[1m\033[38;2;255;215;0m'
+RED='\033[1m\033[38;5;196m'
+AQUA='\e[1;38;2;0;255;255m'
+NC='\033[0m' # No Color
+
+# Function to check if fwupdmgr is available
+check_fwupdmgr() {
+    if command -v fwupdmgr >/dev/null; then
+        return 0
+    else
+        echo -e "${RED}Error: fwupdmgr is not installed.${NC}"
+        read -rp "Do you want to install fwupdmgr? (Y/n): " install_choice
+        case $install_choice in
+        [yY]*)
+            install_fwupdmgr
+            ;;
+        *)
+            exit
+            ;;
+        esac
+    fi
+}
+
+# Function to install fwupdmgr
+install_fwupdmgr() {
+    echo -e "${AQUA}Installing fwupdmgr...${NC}"
+    sleep 1
+    # Add installation commands based on the package manager used by the system
+    if command -v apt >/dev/null; then
+        sudo apt update && sudo apt install fwupd -y
+    elif command -v dnf >/dev/null; then
+        sudo dnf install fwupd -y
+    elif command -v yum >/dev/null; then
+        sudo yum install fwupd -y
+    elif command -v zypper >/dev/null; then
+        sudo zypper install fwupd
+    elif command -v pacman >/dev/null; then
+        sudo pacman -S fwupd
+    else
+        echo -e "${RED}Sorry, I don't know how to install fwupdmgr on your system.${NC}"
+        exit
+    fi
+}
+
+# Function to display a menu with options
+display_menu() {
+    clear
+    echo ""
+    COLUMNS=$(tput cols)
+    t1="====================="
+    t2="Firmware Manager"
+    printf "${GOLD}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    printf "${GOLD}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
+    printf "${GOLD}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    echo ""
+    echo -e "${AQUA}Select Your Choice:${NC}"
+    echo " 1. Check for Firmware Updates"
+    echo " 2. Download and Install Firmware Updates"
+    echo " 3. Show More Info about Firmware Updates"
+    echo " 4. Rollback Firmware"
+    echo " 5. Exit"
+    echo ""
+    echo -n "Enter your choice: "
+}
+
+# Function to check for firmware updates
+check_firmware_updates() {
+    check_fwupdmgr
+    echo ""
+    echo -e "${AQUA}Checking for Firmware Updates...${NC}"
+    sleep 1
+    fwupdmgr get-devices
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to download and install firmware updates
+install_firmware_updates() {
+    check_fwupdmgr
+    echo ""
+    echo -e "${AQUA}Downloading and Installing Firmware Updates...${NC}"
+    sleep 1
+    sudo fwupdmgr update
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to show more information about firmware updates
+show_more_info() {
+    check_fwupdmgr
+    echo ""
+    echo -e "${AQUA}Showing More Information about Firmware Updates...${NC}"
+    sleep 1
+    sudo fwupdmgr get-updates
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to perform a firmware rollback
+perform_rollback() {
+    check_fwupdmgr
+    echo ""
+    echo -e "${AQUA}Performing Firmware Rollback...${NC}"
+    sleep 1
+    sudo fwupdmgr downgrade
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Main loop
+while true; do
+    display_menu
+    read -r choice
+
+    case $choice in
+    1) check_firmware_updates ;;
+    2) install_firmware_updates ;;
+    3) show_more_info ;;
+    4) perform_rollback ;;
+    5) exit ;;
+    *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;;
+    esac
+done
