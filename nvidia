@@ -56,7 +56,7 @@ install_drivers_debian() {
 # Function to install drivers on Red Hat-based distributions
 install_drivers_redhat() {
     echo -e "${GREEN}Installing NVIDIA drivers on Red Hat-based system...${NC}"
-    sudo dnf install -y epel-release
+    sudo dnf update -y
     sudo dnf install -y dkms kernel-devel gcc
     sudo dnf config-manager --add-repo=https://negativo17.org/repos/fedora-nvidia.repo
     sudo dnf install -y nvidia-driver
