@@ -51,10 +51,11 @@ echo " 5. RPM App Manager"
 echo " 6. Snap App Manager"
 echo " 7. Flatpak App Manager"
 echo " 8. Firmware Manager"
-echo " 9. Update All Packages In Your System"
-echo "10. Run Setup"
-echo "11. Update Linux Apps Manager"
-echo "12. Exit Program"
+echo " 9. NVIDIA Driver Manager"
+echo "10. Update All Packages In Your System"
+echo "11. Run Setup"
+echo "12. Update Linux Apps Manager"
+echo "13. Exit Program"
 echo ""
 read -p "Enter your choice: " choice
 
@@ -83,6 +84,9 @@ elif [ $choice -eq 8 ]; then
     chmod +x firmware && ./firmware
 
 elif [ $choice -eq 9 ]; then
+    chmod +x nvidia && ./nvidia
+
+elif [ $choice -eq 10 ]; then
     echo ""
     # Check if apt is available and update it
     if command -v apt &>/dev/null; then
@@ -138,10 +142,10 @@ elif [ $choice -eq 9 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager && ./manager
 
-elif [ $choice -eq 10 ]; then
+elif [ $choice -eq 11 ]; then
     chmod +x setup && ./setup
 
-elif [ $choice -eq 11 ]; then
+elif [ $choice -eq 12 ]; then
     echo ""
     echo -e "${GREEN}Downloading updates if available...${NC}"
     sleep 1
@@ -157,7 +161,7 @@ elif [ $choice -eq 11 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager && ./manager
 
-elif [ $choice -eq 12 ]; then
+elif [ $choice -eq 13 ]; then
     exit_script
 
 else

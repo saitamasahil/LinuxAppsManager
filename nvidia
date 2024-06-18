@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+
+# Define some color variables
+TEAL='\e[1;38;2;0;128;128m'
+PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
+NC='\033[0m' # No Color
+
+# Function to display a menu with options
+display_menu() {
+    clear
+    echo ""
+    COLUMNS=$(tput cols)
+    t1="======================="
+    t2="NVIDIA Driver Manager"
+    printf "${TEAL}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    printf "${TEAL}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
+    printf "${TEAL}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    echo ""
+    echo -e "${PEACH}Select Your Choice:${NC}"
+    echo " 1. Detect NVIDIA GPU"
+    echo " 2. Install NVIDIA Drivers"
+    echo " 3. List Installed NVIDIA Packages"
+    echo " 4. Uninstall NVIDIA Drivers"
+    echo " 5. Go Back to Main Menu"
+    echo ""
+    echo -n "Enter your choice: "
+}
+
+# Function to detect NVIDIA GPU
+detect_nvidia_gpu() {
+    lspci | grep -i nvidia >/dev/null 2>&1
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}NVIDIA GPU detected.${NC}"
+        sleep 3
+        return 0
+    else
+        echo -e "${RED}No NVIDIA GPU detected.${NC}"
+        sleep 3
+        return 1
+    fi
+}
+
+# Function to install drivers on Debian-based distributions
+install_drivers_debian() {
+    echo -e "${GREEN}Installing NVIDIA drivers on Debian-based system...${NC}"
+    sudo apt update
+    sudo apt install -y dkms build-essential linux-headers-$(uname -r)
+    sudo apt install -y nvidia-driver
+    echo -e "${GREEN}NVIDIA drivers installed on Debian-based system.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to install drivers on Red Hat-based distributions
+install_drivers_redhat() {
+    echo -e "${GREEN}Installing NVIDIA drivers on Red Hat-based system...${NC}"
+    sudo dnf install -y epel-release
+    sudo dnf install -y dkms kernel-devel gcc
+    sudo dnf config-manager --add-repo=https://negativo17.org/repos/fedora-nvidia.repo
+    sudo dnf install -y nvidia-driver
+    echo -e "${GREEN}NVIDIA drivers installed on Red Hat-based system.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to install drivers on Arch-based distributions
+install_drivers_arch() {
+    echo -e "${GREEN}Installing NVIDIA drivers on Arch-based system...${NC}"
+    sudo pacman -Syu --noconfirm
+    sudo pacman -S --noconfirm nvidia-dkms nvidia-utils
+    echo -e "${GREEN}NVIDIA drivers installed on Arch-based system.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to install drivers on SUSE-based distributions
+install_drivers_suse() {
+    echo -e "${GREEN}Installing NVIDIA drivers on SUSE-based system...${NC}"
+    sudo zypper refresh
+    sudo zypper install -y dkms kernel-default-devel gcc
+    sudo zypper addrepo --refresh https://download.nvidia.com/opensuse/leap/\$releasever NVIDIA
+    sudo zypper install -y x11-video-nvidiaG05
+    echo -e "${GREEN}NVIDIA drivers installed on SUSE-based system.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to install NVIDIA drivers
+install_drivers() {
+    if detect_nvidia_gpu; then
+        detect_distro
+        case "$OS" in
+        ubuntu | debian) install_drivers_debian ;;
+        fedora | centos | rhel) install_drivers_redhat ;;
+        arch | manjaro) install_drivers_arch ;;
+        opensuse | suse) install_drivers_suse ;;
+        *) echo -e "${RED}Unsupported distribution: $OS${NC}" && exit 1 ;;
+        esac
+    else
+        sleep 1
+        read -rp "Press Enter to continue..."
+    fi
+}
+
+# Function to list installed NVIDIA packages
+list_nvidia_packages() {
+    echo -e "${GREEN}Listing installed NVIDIA packages...${NC}"
+    case "$OS" in
+    ubuntu | debian)
+        dpkg -l | grep -i nvidia
+        ;;
+    fedora | centos | rhel)
+        rpm -qa | grep -i nvidia
+        ;;
+    arch | manjaro)
+        pacman -Qs nvidia
+        ;;
+    opensuse | suse)
+        zypper se --installed-only nvidia
+        ;;
+    *)
+        echo -e "${RED}Unsupported distribution: $OS${NC}"
+        sleep 1
+        ;;
+    esac
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to uninstall NVIDIA drivers
+uninstall_nvidia_drivers() {
+    echo -e "${GREEN}Uninstalling NVIDIA drivers...${NC}"
+    case "$OS" in
+    ubuntu | debian)
+        sudo apt remove --purge -y nvidia-*
+        ;;
+    fedora | centos | rhel)
+        sudo dnf remove -y nvidia-driver
+        ;;
+    arch | manjaro)
+        sudo pacman -Rns --noconfirm nvidia-dkms nvidia-utils
+        ;;
+    opensuse | suse)
+        sudo zypper rm -y x11-video-nvidiaG05
+        ;;
+    *)
+        echo -e "${RED}Unsupported distribution: $OS${NC}"
+        exit 1
+        ;;
+    esac
+    echo -e "${GREEN}Task completed.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to go back to main menu
+main_menu() {
+    chmod +x manager
+    ./manager
+}
+
+# Detect the Linux distribution
+detect_distro() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        OS=$ID
+    else
+        OS=$(uname -s)
+    fi
+}
+
+# Main loop
+while true; do
+    display_menu # Display the menu
+    read -r choice
+
+    case $choice in
+    1) detect_nvidia_gpu ;;
+    2) install_drivers ;;
+    3) detect_distro && list_nvidia_packages ;;
+    4) detect_distro && uninstall_nvidia_drivers ;;
+    5) main_menu ;;
+    *) echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;;
+    esac
+done
