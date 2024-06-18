@@ -90,13 +90,31 @@ install_drivers_suse() {
 # Function to install NVIDIA drivers
 install_drivers() {
     if detect_nvidia_gpu; then
-        detect_distro
-        case "$OS" in
-        ubuntu | debian) install_drivers_debian ;;
-        fedora | centos | rhel) install_drivers_redhat ;;
-        arch | manjaro) install_drivers_arch ;;
-        opensuse | suse) install_drivers_suse ;;
-        *) echo -e "${RED}Unsupported distribution: $OS${NC}" && exit 1 ;;
+        local package_manager
+        if command -v apt &>/dev/null; then
+            package_manager="apt"
+        elif command -v dnf &>/dev/null; then
+            package_manager="dnf"
+        elif command -v pacman &>/dev/null; then
+            package_manager="pacman"
+        elif command -v zypper &>/dev/null; then
+            package_manager="zypper"
+        else
+            echo -e "${RED}Unsupported package manager.${NC}"
+            sleep 1
+            exit 1
+        fi
+
+        case "$package_manager" in
+        apt) install_drivers_debian ;;
+        dnf) install_drivers_redhat ;;
+        pacman) install_drivers_arch ;;
+        zypper) install_drivers_suse ;;
+        *)
+            echo -e "${RED}Unsupported package manager.${NC}"
+            sleep 1
+            exit 1
+            ;;
         esac
     else
         sleep 1
@@ -107,22 +125,30 @@ install_drivers() {
 # Function to list installed NVIDIA packages
 list_nvidia_packages() {
     echo -e "${GREEN}Listing installed NVIDIA packages...${NC}"
-    case "$OS" in
-    ubuntu | debian)
-        dpkg -l | grep -i nvidia
-        ;;
-    fedora | centos | rhel)
-        rpm -qa | grep -i nvidia
-        ;;
-    arch | manjaro)
-        pacman -Qs nvidia
-        ;;
-    opensuse | suse)
-        zypper se --installed-only nvidia
-        ;;
-    *)
-        echo -e "${RED}Unsupported distribution: $OS${NC}"
+    local package_manager
+    if command -v apt &>/dev/null; then
+        package_manager="apt"
+    elif command -v dnf &>/dev/null; then
+        package_manager="dnf"
+    elif command -v pacman &>/dev/null; then
+        package_manager="pacman"
+    elif command -v zypper &>/dev/null; then
+        package_manager="zypper"
+    else
+        echo -e "${RED}Unsupported package manager.${NC}"
         sleep 1
+        exit 1
+    fi
+
+    case "$package_manager" in
+    apt) dpkg -l | grep -i nvidia ;;
+    dnf) rpm -qa | grep -i nvidia ;;
+    pacman) pacman -Qs nvidia ;;
+    zypper) zypper se --installed-only nvidia ;;
+    *)
+        echo -e "${RED}Unsupported package manager.${NC}"
+        sleep 1
+        exit 1
         ;;
     esac
     sleep 1
@@ -132,21 +158,29 @@ list_nvidia_packages() {
 # Function to uninstall NVIDIA drivers
 uninstall_nvidia_drivers() {
     echo -e "${GREEN}Uninstalling NVIDIA drivers...${NC}"
-    case "$OS" in
-    ubuntu | debian)
-        sudo apt remove --purge -y nvidia-*
-        ;;
-    fedora | centos | rhel)
-        sudo dnf remove -y nvidia-driver
-        ;;
-    arch | manjaro)
-        sudo pacman -Rns --noconfirm nvidia-dkms nvidia-utils
-        ;;
-    opensuse | suse)
-        sudo zypper rm -y x11-video-nvidiaG05
-        ;;
+    local package_manager
+    if command -v apt &>/dev/null; then
+        package_manager="apt"
+    elif command -v dnf &>/dev/null; then
+        package_manager="dnf"
+    elif command -v pacman &>/dev/null; then
+        package_manager="pacman"
+    elif command -v zypper &>/dev/null; then
+        package_manager="zypper"
+    else
+        echo -e "${RED}Unsupported package manager.${NC}"
+        sleep 1
+        exit 1
+    fi
+
+    case "$package_manager" in
+    apt) sudo apt remove --purge -y nvidia-* ;;
+    dnf) sudo dnf remove -y nvidia-driver ;;
+    pacman) sudo pacman -Rns --noconfirm nvidia-dkms nvidia-utils ;;
+    zypper) sudo zypper rm -y x11-video-nvidiaG05 ;;
     *)
-        echo -e "${RED}Unsupported distribution: $OS${NC}"
+        echo -e "${RED}Unsupported package manager.${NC}"
+        sleep 1
         exit 1
         ;;
     esac
@@ -161,16 +195,6 @@ main_menu() {
     ./manager
 }
 
-# Detect the Linux distribution
-detect_distro() {
-    if [ -f /etc/os-release ]; then
-        . /etc/os-release
-        OS=$ID
-    else
-        OS=$(uname -s)
-    fi
-}
-
 # Main loop
 while true; do
     display_menu # Display the menu
@@ -179,8 +203,8 @@ while true; do
     case $choice in
     1) detect_nvidia_gpu ;;
     2) install_drivers ;;
-    3) detect_distro && list_nvidia_packages ;;
-    4) detect_distro && uninstall_nvidia_drivers ;;
+    3) list_nvidia_packages ;;
+    4) uninstall_nvidia_drivers ;;
     5) main_menu ;;
     *) echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;;
     esac
