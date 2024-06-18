@@ -1,6 +1,6 @@
 # Linux Apps Manager
 
-Linux Apps Manager is a shell script program that allows you to easily manage your Linux apps using different app managers such as APT, Pacman, DNF, DEB, RPM, Snap and Flatpak.
+Linux Apps Manager is a shell script program that allows you to easily manage your Linux apps using different app managers such as APT, Pacman, DNF, DEB, RPM, Snap and Flatpak. It also has functionality to manage NVIDIA Drivers.
 
 ## Features
 
@@ -13,6 +13,7 @@ Linux Apps Manager is a shell script program that allows you to easily manage yo
 - Uninstall apps
 - Delete unnecessary data & cache
 - Manage permissions for snap & flatpak apps
+- Manage NVIDIA drivers
 - Switch between different app managers
 
 ## Screenshots
@@ -76,7 +77,7 @@ chmod +x manager && ./manager
 chmod +x manager && ./manager
 ```
 
-3. Choose the option 9 to run setup.
+3. Choose the option 11 to run setup.
 4. Choose the option 1 to install Linux Apps Manager in your system.
 5. To run Linux Apps Manager, type `lam` in your terminal.
 6. Choose the app manager you want to use from the main menu.
@@ -90,7 +91,7 @@ chmod +x manager && ./manager
 To uninstall Linux Apps Manager from your system, follow these steps:
 
 1. Run `lam` in your terminal.
-2. Choose the option 9 to run setup.
+2. Choose the option 11 to run setup.
 3. Choose the option 2 to uninstall Linux Apps Manager from your system.
 
 ## License
