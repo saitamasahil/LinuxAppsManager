@@ -37,7 +37,7 @@ list_all_apps() {
     echo -e "${GREEN}Listing All Apps:${NC}"
     sleep 1
     echo -e "${GREEN}-----------------------${NC}"
-    dnf list installed # Use dnf command to list all apps
+    dnf list --installed # Use dnf command to list all apps
     sleep 1
     read -rp "Press Enter to continue..."
 }
