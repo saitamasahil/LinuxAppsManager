@@ -52,10 +52,11 @@ echo " 6. Snap App Manager"
 echo " 7. Flatpak App Manager"
 echo " 8. Firmware Manager"
 echo " 9. NVIDIA Driver Manager"
-echo "10. Update All Packages In Your System"
-echo "11. Run Setup"
-echo "12. Update Linux Apps Manager"
-echo "13. Exit Program"
+echo "10. Tuned Power Profile Manager"
+echo "11. Update All Packages In Your System"
+echo "12. Run Setup"
+echo "13. Update Linux Apps Manager"
+echo "14. Exit Program"
 echo ""
 read -p "Enter your choice: " choice
 
@@ -87,6 +88,9 @@ elif [ $choice -eq 9 ]; then
     chmod +x nvidia && ./nvidia
 
 elif [ $choice -eq 10 ]; then
+    chmod +x tuned && ./tuned
+
+elif [ $choice -eq 11 ]; then
     echo ""
     # Check if apt is available and update it
     if command -v apt &>/dev/null; then
@@ -142,10 +146,10 @@ elif [ $choice -eq 10 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager && ./manager
 
-elif [ $choice -eq 11 ]; then
+elif [ $choice -eq 12 ]; then
     chmod +x setup && ./setup
 
-elif [ $choice -eq 12 ]; then
+elif [ $choice -eq 13 ]; then
     echo ""
     echo -e "${GREEN}Downloading updates if available...${NC}"
     sleep 1
@@ -161,7 +165,7 @@ elif [ $choice -eq 12 ]; then
     read -rp "Press Enter to continue..."
     chmod +x manager && ./manager
 
-elif [ $choice -eq 13 ]; then
+elif [ $choice -eq 14 ]; then
     exit_script
 
 else

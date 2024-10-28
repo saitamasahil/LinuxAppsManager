@@ -1,0 +1,175 @@
+#!/usr/bin/env bash
+
+# Define some color variables
+BABY_PINK='\033[1m\033[38;2;255;182;193m'
+PEACH='\e[1;38;2;255;204;153m'
+GREEN='\033[1m\033[38;2;0;255;0m'
+RED='\033[1m\033[38;5;196m'
+AQUA='\e[1;38;2;0;255;255m'
+NC='\033[0m' # No Color
+
+# Function to display a menu with options
+display_menu() {
+    clear
+    echo ""
+    COLUMNS=$(tput cols)
+    t1="============================="
+    t2="Tuned Power Profile Manager"
+    printf "${BABY_PINK}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    printf "${BABY_PINK}%*s\n${NC}" $(((${#t2} + $COLUMNS) / 2)) "$t2"
+    printf "${BABY_PINK}%*s\n${NC}" $(((${#t1} + $COLUMNS) / 2)) "$t1"
+    echo ""
+    echo -e "${PEACH}Select Your Choice:${NC}"
+    echo " 1. Install Tuned"
+    echo " 2. Uninstall Tuned"
+    echo " 3. List Available Profiles"
+    echo " 4. Show Active Profile"
+    echo " 5. Set Active Profile"
+    echo " 6. Enable Tuned Service"
+    echo " 7. Disable Tuned Service"
+    echo " 8. Check Tuned Service Status"
+    echo " 9. Go Back To Main Menu"
+    echo ""
+    echo -n "Enter your choice: "
+}
+
+# Function to install Tuned
+install_tuned() {
+    echo ""
+    echo -e "${GREEN}Installing Tuned...${NC}"
+    sleep 1
+    if command -v apt >/dev/null; then
+        sudo apt update && sudo apt install tuned -y
+        sudo systemctl enable tuned
+        sudo systemctl start tuned
+    elif command -v dnf >/dev/null; then
+        sudo dnf install tuned -y
+        sudo systemctl enable tuned
+        sudo systemctl start tuned
+    elif command -v yum >/dev/null; then
+        sudo yum install tuned -y
+        sudo systemctl enable tuned
+        sudo systemctl start tuned
+    elif command -v zypper >/dev/null; then
+        sudo zypper install tuned
+        sudo systemctl enable tuned
+        sudo systemctl start tuned
+    elif command -v pacman >/dev/null; then
+        sudo pacman -S tuned
+        sudo systemctl enable tuned
+        sudo systemctl start tuned
+    else
+        echo -e "${AQUA}Sorry, I don't know how to install Tuned on your system.${NC}"
+    fi
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to uninstall Tuned
+uninstall_tuned() {
+    echo ""
+    echo -e "${RED}Uninstalling Tuned...${NC}"
+    sleep 1
+    if command -v apt >/dev/null; then
+        sudo apt remove --purge tuned -y
+    elif command -v dnf >/dev/null; then
+        sudo dnf remove tuned -y
+    elif command -v yum >/dev/null; then
+        sudo yum remove tuned -y
+    elif command -v zypper >/dev/null; then
+        sudo zypper remove tuned
+    elif command -v pacman >/dev/null; then
+        sudo pacman -R tuned
+    else
+        echo -e "${AQUA}Sorry, I don't know how to uninstall Tuned on your system.${NC}"
+    fi
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to list available profiles
+list_profiles() {
+    echo ""
+    echo -e "${GREEN}Checking Profiles...${NC}"
+    sleep 1
+    tuned-adm list
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to show active profile
+show_active_profile() {
+    echo ""
+    echo -e "${GREEN}Checking Profiles...${NC}"
+    sleep 1
+    tuned-adm active
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to set active profile
+set_active_profile() {
+    echo ""
+    read -rp "Enter the name of the profile to activate: " profile_name
+    echo -e "${GREEN}Setting active profile to $profile_name...${NC}"
+    sleep 1
+    tuned-adm profile "$profile_name"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to enable tuned service
+enable_tuned() {
+    echo ""
+    echo -e "${GREEN}Enabling Tuned Service...${NC}"
+    sudo systemctl enable tuned
+    sudo systemctl start tuned
+    echo -e "${GREEN}Tuned Service has been enabled and started.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to disable tuned service
+disable_tuned() {
+    echo ""
+    echo -e "${RED}Disabling Tuned Service...${NC}"
+    sudo systemctl stop tuned
+    sudo systemctl disable tuned
+    echo -e "${RED}Tuned Service has been disabled.${NC}"
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to check status of tuned service
+check_status() {
+    echo ""
+    echo -e "${GREEN}Checking Tuned Service Status...${NC}"
+    systemctl status tuned --no-pager
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Go back to main menu
+main_menu() {
+    chmod +x manager
+    ./manager
+}
+
+# Main loop
+while true; do
+    display_menu # Display the menu
+    read -r choice
+
+    case $choice in
+    1) install_tuned ;;                                                                # Install Tuned
+    2) uninstall_tuned ;;                                                              # Uninstall Tuned
+    3) list_profiles ;;                                                                # List available profiles
+    4) show_active_profile ;;                                                          # Show current active profile
+    5) set_active_profile ;;                                                           # Set active profile
+    6) enable_tuned ;;                                                                 # Enable Tuned service
+    7) disable_tuned ;;                                                                # Disable Tuned service
+    8) check_status ;;                                                                 # Check Tuned service status
+    9) main_menu ;;                                                                   # Go back to main menu
+    *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;; # Invalid choice
+    esac
+done
