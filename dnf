@@ -26,7 +26,9 @@ display_menu() {
     echo " 4. Search & Install App"
     echo " 5. Uninstall App"
     echo " 6. Delete DNF Cache & Unnecessary Data"
-    echo " 7. Go Back To Main Menu"
+    echo " 7. List All DNF Groups"
+    echo " 8. List Installed DNF Groups"
+    echo " 9. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
 }
@@ -101,6 +103,28 @@ delete_unused() {
     read -rp "Press Enter to continue..."
 }
 
+# Function to list all DNF groups
+list_all_groups() {
+    echo ""
+    echo -e "${GREEN}Listing All DNF Groups:${NC}"
+    sleep 1
+    echo -e "${GREEN}-----------------------${NC}"
+    dnf group list --hidden # Show all groups
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
+# Function to list installed DNF groups
+list_installed_groups() {
+    echo ""
+    echo -e "${GREEN}Listing Installed DNF Groups:${NC}"
+    sleep 1
+    echo -e "${GREEN}-----------------------${NC}"
+    dnf group list --hidden --installed # Show installed groups
+    sleep 1
+    read -rp "Press Enter to continue..."
+}
+
 # Go back to main menu
 main_menu() {
     chmod +x manager
@@ -118,8 +142,10 @@ while true; do
     3) update_apps ;;                                                                  # Update all apps
     4) install_app ;;                                                                  # Install app
     5) uninstall_app ;;                                                                # Uninstall app
-    6) delete_unused ;;                                                                # Delete apt cache and unnecessary data
-    7) main_menu ;;                                                                    # Exit to main menu
+    6) delete_unused ;;                                                                # Delete dnf cache and unnecessary data
+    7) list_all_groups ;;                                                             # List all DNF groups
+    8) list_installed_groups ;;                                                       # List installed DNF groups
+    9) main_menu ;;                                                                    # Exit to main menu
     *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;; # Invalid choice
     esac
 done
