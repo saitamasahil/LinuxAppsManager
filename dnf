@@ -103,7 +103,7 @@ delete_unused() {
     read -rp "Press Enter to continue..."
 }
 
-# Function to list all DNF groups
+# Function to list all groups and optionally install a group
 list_all_groups() {
     echo ""
     echo -e "${GREEN}Listing All Groups:${NC}"
@@ -111,10 +111,21 @@ list_all_groups() {
     echo -e "${GREEN}-----------------------${NC}"
     dnf group list --hidden # Show all groups
     sleep 1
+    
+    # Ask if user wants to install any group
+    echo ""
+    read -rp "Do you want to install any group from the list? (Y/n): " choice
+    if [[ $choice == "Y" || $choice == "y" ]]; then
+        read -rp "Enter the name of the group you want to install: " group_name
+        sudo dnf group install "$group_name" -y
+        echo -e "${GREEN}Operation completed successfully.${NC}"
+    fi
+    
+    # Continue
     read -rp "Press Enter to continue..."
 }
 
-# Function to list installed DNF groups
+# Function to list installed groups
 list_installed_groups() {
     echo ""
     echo -e "${GREEN}Listing Installed Groups:${NC}"
