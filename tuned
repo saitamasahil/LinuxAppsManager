@@ -33,34 +33,37 @@ display_menu() {
     echo -n "Enter your choice: "
 }
 
-# Function to install Tuned
+# Function to install Tuned and Tuned PPD
 install_tuned() {
     echo ""
-    echo -e "${GREEN}Installing Tuned...${NC}"
+    echo -e "${GREEN}Installing Tuned and Tuned PPD...${NC}"
     sleep 1
+
+    # Check for package manager and install Tuned and Tuned PPD accordingly
     if command -v apt >/dev/null; then
         sudo apt update && sudo apt install tuned -y
         sudo systemctl enable tuned
         sudo systemctl start tuned
     elif command -v dnf >/dev/null; then
-        sudo dnf install tuned -y
+        sudo dnf install tuned tuned-ppd -y
         sudo systemctl enable tuned
         sudo systemctl start tuned
     elif command -v yum >/dev/null; then
-        sudo yum install tuned -y
+        sudo yum install tuned tuned-ppd -y
         sudo systemctl enable tuned
         sudo systemctl start tuned
     elif command -v zypper >/dev/null; then
-        sudo zypper install tuned
+        sudo zypper install tuned tuned-ppd -y
         sudo systemctl enable tuned
         sudo systemctl start tuned
     elif command -v pacman >/dev/null; then
-        sudo pacman -S tuned
+        sudo pacman -S tuned tuned-ppd --noconfirm
         sudo systemctl enable tuned
         sudo systemctl start tuned
     else
         echo -e "${AQUA}Sorry, I don't know how to install Tuned on your system.${NC}"
     fi
+
     sleep 1
     read -rp "Press Enter to continue..."
 }
@@ -169,7 +172,7 @@ while true; do
     6) enable_tuned ;;                                                                 # Enable Tuned service
     7) disable_tuned ;;                                                                # Disable Tuned service
     8) check_status ;;                                                                 # Check Tuned service status
-    9) main_menu ;;                                                                   # Go back to main menu
+    9) main_menu ;;                                                                    # Go back to main menu
     *) echo "" && echo -e "${RED}Invalid choice. Please try again.${NC}" && sleep 3 ;; # Invalid choice
     esac
 done
