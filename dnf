@@ -26,8 +26,8 @@ display_menu() {
     echo " 4. Search & Install App"
     echo " 5. Uninstall App"
     echo " 6. Delete DNF Cache & Unnecessary Data"
-    echo " 7. List All DNF Groups"
-    echo " 8. List Installed DNF Groups"
+    echo " 7. List All Groups"
+    echo " 8. List Installed Groups"
     echo " 9. Go Back To Main Menu"
     echo ""
     echo -n "Enter your choice: "
@@ -106,7 +106,7 @@ delete_unused() {
 # Function to list all DNF groups
 list_all_groups() {
     echo ""
-    echo -e "${GREEN}Listing All DNF Groups:${NC}"
+    echo -e "${GREEN}Listing All Groups:${NC}"
     sleep 1
     echo -e "${GREEN}-----------------------${NC}"
     dnf group list --hidden # Show all groups
@@ -117,7 +117,7 @@ list_all_groups() {
 # Function to list installed DNF groups
 list_installed_groups() {
     echo ""
-    echo -e "${GREEN}Listing Installed DNF Groups:${NC}"
+    echo -e "${GREEN}Listing Installed Groups:${NC}"
     sleep 1
     echo -e "${GREEN}-----------------------${NC}"
     dnf group list --hidden --installed # Show installed groups
